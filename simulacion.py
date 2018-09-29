@@ -16,7 +16,8 @@ class Simulador:
         self.estaciones = {}
         self.velocidad_bicicleta = 40
         self.demanda_insatisfecha = 0
-        self.demanda_satisfecha = 1
+        self.demanda_satisfecha = 0
+        self.prints = False
 
     def definir_distribucion_manana(self):
         i = 0
@@ -71,7 +72,9 @@ class Simulador:
 
             if evento[1] == "Inicio persona":
                 if self.estaciones[evento[2]].inventario == 0:
-                    print(str(evento) + "Demanda Insatisfecha")
+                    if self.prints:
+                        print(str(evento) + "Demanda Insatisfecha")
+                    self.estaciones[evento[2]].demanda_insatisfecha += 1
                     self.demanda_insatisfecha += 1
                     self.cola.pop(0)
                     if self.tiempo_actual < (11 * 60):
@@ -95,7 +98,8 @@ class Simulador:
                                                self.estaciones[
                                                    evento[2]].proxima_llegada)
                 elif self.estaciones[evento[2]].inventario > 0:
-                    print(str(evento) + "Demanda Satisfecha")
+                    if self.prints:
+                        print(str(evento) + "Demanda Satisfecha")
                     if self.tiempo_actual < (11 * 60):
                         estacion_llegada = numpy.random.choice(
                             list(self.estaciones.keys()), 1, p=list(self.estaciones[
@@ -132,6 +136,7 @@ class Simulador:
                                                    evento[2]].proxima_llegada)
 
                     self.estaciones[evento[2]].inventario -= 1
+                    self.estaciones[evento[2]].demanda_satisfecha += 1
                     self.demanda_satisfecha += 1
                     #print(estacion_llegada)
                     tupla = self.tiempo_viaje_persona(evento[2],
@@ -150,7 +155,8 @@ class Simulador:
 
 
             elif evento[1] == "Fin persona":
-                print(str(evento) + "Persona Finaliza")
+                if self.prints:
+                    print(str(evento) + "Persona Finaliza")
                 self.estaciones[evento[2]].inventario += 1
                 self.cola.pop(0)
 
