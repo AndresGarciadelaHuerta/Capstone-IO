@@ -1,44 +1,44 @@
 from gurobipy import *
 from random import randint
-from
+from simulacion import *
+
+num_camiones = 8
 
 
-s = Simulador()
-# Estaciones al final del dia
-estaciones = s.run()
-print(estaciones)
-m = Model('verga')
-est = {}
-vars = {}
-for i in range(estaciones - 1):
-    ch = randint(-2, 2)
-    Estacion.demanda += ch
-    est[i] = Estacion(i, randint(0, 100), randint(0, 100), ch)
-    vars[i] = {}
-    for j in range(8):
-        vars[i][j] = m.addVar(name='Z_{}_{}'.format(i, j), vtype=GRB.BINARY)
+def opti(estaciones):
+    m = Model('cluster')
+    m.update()
+    excesos = {}
+    vars = {}
+    demands = {}
+    for estacion in estaciones.values():
+        excesos[estacion.num] = estacion.inventario - estacion.inv_manana
+        vars[estacion.num] = {}
+        demands[estacion.num] = {}
+        for j in range(num_camiones):
+            vars[estacion.num][j] = m.addVar(name='Z_{}_{}'.format(estacion.num, j), vtype=GRB.BINARY)
+            m.update()
+            demands[estacion.num][j] = m.addVar(name='d_{}_{}'.format(estacion.num, j), vtype=GRB.INTEGER)
+            m.update()
+    m.addConstrs(quicksum(vars[i][j] * demands[i][j] for i in vars) == 0 for j in vars[1])
+    m.update()
+    #m.addConstrs(quicksum(abs(demands[i][j]) for j in vars[1]) == abs(excesos[i]) for i in vars)
+    m.addConstrs(quicksum(demands[i][j] for j in vars[1]) == excesos[i] for i in vars)
+    m.update()
+    m.addConstrs(quicksum(vars[i][j] for j in vars[1]) <= 1 for i in vars)
+    m.update()
+    m.setObjective(quicksum(
+        vars[i][j] * vars[k][j] * estaciones['Estación {}'.format(i)].distancias_cuadrado[k] for i
+        in vars for k in vars for j in vars[1]), GRB.MINIMIZE)
+    m.update()
+    m.optimize()
+    for v in m.getVars():
+        print(v.varName, v.x)
 
 
-vars[estaciones - 1] = {}
-est[estaciones - 1] = Estacion(estaciones - 1, randint(0, 100), randint(0, 100), -Estacion.demanda)
-for j in range(8):
-    vars[estaciones -1][j] = m.addVar(name='Z_{}_{}'.format(estaciones - 1, j), vtype=GRB.BINARY)
-
-for i in est.values():
-    i.distancias = {j: (est[j].x - i.x) ** 2 + (est[j].y - i.y) ** 2 for j in range(estaciones)}
-
-
-for j in range(8):
-    m.addConstr(quicksum(vars[i][j] for i in vars) == 0)
-    #m.addConstr(3 <= quicksum(vars[i][j] for i in vars) <= 8)
-
-for i in vars:
-    m.addConstr(quicksum(vars[i][j] for j in range(8)) == 1)
-
-m.setObjective(quicksum(vars[i][j] * vars[m][j] * est[i].distancias[m] for i in est for m in est for j in range(8)))
-
-m.optimize()
-
-for i in est:
-    for j in range(8):
-        print(vars[i][j].varName)
+if __name__ == '__main__':
+    estaciones = poblar()
+    s = Simulador()
+    s.estaciones = estaciones
+    s.run()
+    opti(s.estaciones)

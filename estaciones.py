@@ -19,6 +19,8 @@ class Estacion:
         self.tasa_tarde = 0
         self.tasa_noche = 0
         self.distancias_cuadrado = {}
+        self.num = int(number.split()[1])
+        self.inv_manana = 17 if self.num % 2 == 0 else 18
 
     def proxima_llegada_manana(self):
         self.proxima_llegada = expovariate(float(

@@ -22,7 +22,7 @@ class Simulador:
     def definir_distribucion_manana(self):
         i = 0
         for estacion in self.estaciones.keys():
-            if i // 2 == 0:
+            if i % 2 == 0:
                 self.estaciones[estacion].inventario = 17
                 i += 1
             else:
