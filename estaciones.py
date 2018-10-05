@@ -18,6 +18,7 @@ class Estacion:
         self.tasa_mediodia = 0
         self.tasa_tarde = 0
         self.tasa_noche = 0
+        self.distancias_cuadrado = {}
 
     def proxima_llegada_manana(self):
         self.proxima_llegada = expovariate(float(

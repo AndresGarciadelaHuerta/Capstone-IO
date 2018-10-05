@@ -1,9 +1,12 @@
 from gurobipy import *
 from random import randint
-from ../simulacion import *
+from
 
 
-estaciones_final =
+s = Simulador()
+# Estaciones al final del dia
+estaciones = s.run()
+print(estaciones)
 m = Model('verga')
 est = {}
 vars = {}

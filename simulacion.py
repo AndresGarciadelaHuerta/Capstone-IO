@@ -61,7 +61,7 @@ class Simulador:
 
             if len(self.cola) == 0:
                 self.contador_dias = 1
-                return
+                return self.estaciones
 
             evento = self.cola[0]
             self.tiempo_actual = evento[0]
