@@ -192,4 +192,12 @@ def poblar():
     #print(estaciones['Estación 1'].tasa_mediodia)
     #print(estaciones['Estación 1'].tasa_tarde)
     #print(estaciones['Estación 1'].tasa_noche)
+
+    for estacion in estaciones.values():
+            estacion.distancias_cuadrado = {estacion2.num: (float(estacion.x) - float(estacion2.x)) ** 2 + (float(estacion.y)
+                                                    - float(estacion2.y)) ** 2 for estacion2 in estaciones.values()}
+
+    #print(estaciones['Estación 1'].distancias_cuadrado)
+
+
     return estaciones

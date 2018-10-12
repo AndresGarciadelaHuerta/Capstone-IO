@@ -1,0 +1,553 @@
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:33:45 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:36:26 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:37:06 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:37:34 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:40:11 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:42:51 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 16:43:08 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:23:41 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:24:43 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:25:19 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:25:46 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:26:30 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:28:27 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:32:41 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+IIS computed: 1 constraints, 8 bounds
+IIS runtime: 0.00 seconds
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:39:15 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:47:07 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:48:14 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 92 rows and 0 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:53:17 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 0 rows, 1472 columns and 0 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [0e+00, 0e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [0e+00, 0e+00]
+Found heuristic solution: objective 0.0000000
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Best objective 0.000000000000e+00, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:56:10 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 0 rows and 1472 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:56:45 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e+00, 3e+00]
+Found heuristic solution: objective 0.0000000
+Presolve removed 92 rows and 1472 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:58:01 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 0 rows and 1472 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 17:58:31 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e+00, 3e+00]
+Found heuristic solution: objective 0.0000000
+Presolve removed 92 rows and 1472 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:02:41 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e+00, 3e+00]
+Found heuristic solution: objective 0.0000000
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Best objective 0.000000000000e+00, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:03:43 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:05:12 2018
+
+Academic license - for non-commercial use only
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:05:38 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+  QRHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0.0000000
+Modified 736 Q diagonals
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Best objective 0.000000000000e+00, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:06:18 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+  QRHS range       [1e+00, 1e+00]
+Modified 736 Q diagonals
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:06:38 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 92 rows, 1472 columns and 736 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 0.0000000
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 1: 0 
+
+Best objective 0.000000000000e+00, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:13:56 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 6e+01]
+Modified 736 Q diagonals
+Presolve time: 0.01s
+Presolved: 2400 rows, 2208 columns, 7360 nonzeros
+Presolved model has 34224 quadratic objective terms
+Variable types: 736 continuous, 1472 integer (736 binary)
+Found heuristic solution: objective 0.0000000
+
+Explored 1 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:14:47 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:16:27 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:16:46 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:17:01 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Modified 736 Q diagonals
+Presolve time: 0.00s
+Presolved: 2400 rows, 2208 columns, 7360 nonzeros
+Presolved model has 34224 quadratic objective terms
+Variable types: 736 continuous, 1472 integer (736 binary)
+Found heuristic solution: objective 0.0000000
+
+Explored 1 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+Gurobi 8.0.1 (mac64, Python) logging started Fri Oct  5 18:17:48 2018
+
+Academic license - for non-commercial use only
+Optimize a model with 184 rows, 1472 columns and 1472 nonzeros
+Model has 33488 quadratic objective terms
+Model has 8 quadratic constraints
+Variable types: 0 continuous, 1472 integer (736 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [0e+00, 0e+00]
+  QObjective range [4e+00, 9e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
