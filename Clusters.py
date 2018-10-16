@@ -6,7 +6,7 @@ num_camiones = 2
 M = 3000
 
 
-def opti(estaciones, dic, param=False):
+def opti(estaciones, dic):
     m = Model('cluster')
     m.update()
     N = {}
@@ -37,7 +37,7 @@ def opti(estaciones, dic, param=False):
     m.update()
     m.addConstrs(quicksum(s[i][j] for j in range(num_camiones)) == S[i] for i in vars)
     m.update()
-    m.addConstrs(quicksum(vars[i][j] for i in vars) <= len(dic) / 2 + len(dic) * .1 for j in range(num_camiones))
+    #m.addConstrs(quicksum(vars[i][j] for i in vars) <= len(dic) / 2 + len(dic) * .1 + 1 for j in range(num_camiones))
     m.update()
     m.addConstrs(s[i][j] >= 0 for i in vars for j in range(num_camiones))
     m.update()
@@ -49,7 +49,7 @@ def opti(estaciones, dic, param=False):
         for j in range(num_camiones)))
     m.update()
     m.Params.MIPGap = .02
-    m.Params.timeLimit = 20
+    #m.Params.timeLimit = 15
     m.optimize()
     resultados = {i: {} for i in range(num_camiones)}
     for z in m.getVars():
@@ -61,26 +61,11 @@ def opti(estaciones, dic, param=False):
                 resultados[cam][est] = {}
             resultados[cam][est]['n'] = n[est][cam].X
             resultados[cam][est]['s'] = s[est][cam].X
-            cam2 = 0 if cam == 1 else 1
-            if vars[est][cam].x == 1 and vars[est][cam2].x == 1:
-                print('Tiene doble {} -> sobra: {} -> n: {}'.format(vars[est][cam].varName, S[est], N[est]))
-
-        elif z.X == 0 and 'Z' in z.varName:
-            lista = z.varName.split('_')
-            est = int(lista[1])
-            cam = int(lista[2])
-            cam2 = 0 if cam == 1 else 1
 
     for grupo in resultados:
-        if param:
-            print('*' * 20)
-            print('GRUPO {}->{}'.format(grupo, len(resultados[grupo])))
         n = 0
         s = 0
         for estacion in resultados[grupo]:
-            if param:
-                print('Estacion {}; necesidad {}; sobra {}'.format(estacion, resultados[grupo][estacion]['n'],
-                                                                   resultados[grupo][estacion]['s']))
             n += resultados[grupo][estacion]['n']
             s += resultados[grupo][estacion]['s']
 
@@ -106,7 +91,10 @@ def opti_final(estaciones):
                 final[cont] = z
                 cont += 1
 
+    total = 0
+
     for grupo in final:
+        total += len(final[grupo])
         s_1 = 0
         n = 0
         print('*' * 20)
@@ -116,6 +104,19 @@ def opti_final(estaciones):
             s_1 += final[grupo][estacion]['s']
             n += final[grupo][estacion]['n']
         print('s: {}-> n: {}'.format(s_1, n))
+
+    print('*'*20)
+    print('Total Estaciones -> {}'.format(total))
+    print('Duplicados')
+    for grupo in final:
+        for estacion in final[grupo]:
+            booleano = False
+            for numero in final:
+                if grupo != numero:
+                    if estacion in final[numero]:
+                        booleano = True
+            if booleano:
+                print('Estacion {}-> Grupo {}'.format(estacion, grupo))
 
     return final
 
