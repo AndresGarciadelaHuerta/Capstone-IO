@@ -2,6 +2,7 @@
 
 from gurobipy import *
 from math import sqrt
+import networkx as nx
 
 
 def ruteo(grupo, estaciones):
@@ -78,4 +79,6 @@ def ruteo(grupo, estaciones):
         print(v.varName, v.x)
 
     print(m.objVal)
+    Grafo = nx.DiGraph()
+    
     return m.objVal
