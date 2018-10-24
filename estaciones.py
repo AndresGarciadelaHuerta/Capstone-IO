@@ -2,10 +2,10 @@ from random import expovariate
 
 class Estacion:
 
-    def __init__(self, number, x, y):
+    def __init__(self, number):
         self.number = number
-        self.x = x
-        self.y = y
+        self.x = 0
+        self.y = 0
         self.demanda_satisfecha = 0
         self.demanda_insatisfecha = 0
         self.inventario = 0
