@@ -32,7 +32,9 @@ def poblar():
                     i += 1
                 j += 1
                 if j >= 4:
-                    estaciones[values[0]] = Estacion(values[0], values[1], values[2])
+                    estaciones[values[0]] = Estacion(values[0])
+                    estaciones[values[0]].x = values[1]
+                    estaciones[values[0]].y = values[2]
                     estaciones[values[0]].diccionario_manana = {}
 
         elif k == 3:
@@ -201,3 +203,5 @@ def poblar():
 
 
     return estaciones
+
+

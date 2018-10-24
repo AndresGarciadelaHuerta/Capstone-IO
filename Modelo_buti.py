@@ -24,7 +24,7 @@ def ruteo(grupo, estaciones):
         s[estacion] = grupo[estacion]['s']
         n[estacion] = grupo[estacion]['n']
         for destino in grupo:
-            c[estacion][destino] = .013 * sqrt(estaciones['Estación {}'.format(estacion)].distancias_cuadrado[destino])
+            c[estacion][destino] = .013 * sqrt(estaciones['Estación {}'.format(estacion)].distancias_cuadrado[str(destino)])
         c[0][estacion] = 0
         c[estacion][0] = 0
     s[0] = 0
@@ -82,20 +82,26 @@ def ruteo(grupo, estaciones):
     # resolver
     m.optimize()
 
-    for var in m.getVars():
-        if 'x' in var.varName:
-            print('Estación {}-> {}'.format(var.varName, var.x))
+    #for var in m.getVars():
+     #   if 'x' in var.varName:
+      #      print('Estación {}-> {}'.format(var.varName, var.x))
 
-    for var in m.getVars():
-        if 'y' in var.varName:
-            print('Estación {}-> {}'.format(var.varName, var.x))
+    #for var in m.getVars():
+     #   if 'y' in var.varName:
+      #      print('Estación {}-> {}'.format(var.varName, var.x))
 
-    print(m.objVal)
+    #print(m.objVal)
 
-    for estacion in grupo:
-        print('Estacion {}-> n: {}-> s: {}'.format(estacion, grupo[estacion]['n'], grupo[estacion]['s']))
+    # for estacion in grupo:
+    #     print('Estacion {}-> n: {}-> s: {}'.format(estacion, grupo[estacion]['n'], grupo[estacion]['s']))
 
     # Grafo dibujado
+
+    #for v in m.getVars():
+     #   print(v.varName, v.x)
+
+    #print(m.objVal)
+
     Grafo = nx.DiGraph()
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))

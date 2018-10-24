@@ -1,5 +1,6 @@
 from gurobipy import *
 from simulacion import *
+from lectura_json import read_json
 import grafvicho as pl
 
 num_camiones = 2
@@ -28,7 +29,6 @@ def opti(estaciones, dic, param=False):
             n[estacion][j] = m.addVar(name='n_{}_{}'.format(estacion, j), vtype=GRB.INTEGER)
             s[estacion][j] = m.addVar(name='s_{}_{}'.format(estacion, j), vtype=GRB.INTEGER)
             m.update()
-
     m.addConstrs(quicksum((n[i][j] - s[i][j]) for i in vars) == 0 for j in range(num_camiones))
     m.update()
     m.addConstrs(M * vars[i][j] >= n[i][j] + s[i][j] for i in vars for j in range(num_camiones))
@@ -43,7 +43,7 @@ def opti(estaciones, dic, param=False):
     m.update()
 
     m.setObjective(quicksum(
-        vars[i][j] * vars[k][j] * estaciones['Estación {}'.format(i)].distancias_cuadrado[k] for i in vars for k in vars
+        vars[i][j] * vars[k][j] * estaciones['Estación {}'.format(i)].distancias_cuadrado[str(k)] for i in vars for k in vars
         for j in range(num_camiones)))
     m.update()
     m.Params.MIPGap = .01
@@ -133,7 +133,8 @@ def opti_final(estaciones):
 
 
 def inicio():
-    estaciones = poblar()
+    # estaciones = poblar()
+    estaciones = read_json()
     s = Simulador()
     s.estaciones = estaciones
     s.run()
