@@ -37,9 +37,6 @@ def opti(estaciones, dic, param=False):
     m.update()
     m.addConstrs(quicksum(s[i][j] for j in range(num_camiones)) == S[i] for i in vars)
     m.update()
-    if param:
-        m.addConstrs(quicksum(vars[i][j] for i in vars) <= 45 for j in range(num_camiones))
-    m.update()
     m.addConstrs(s[i][j] >= 0 for i in vars for j in range(num_camiones))
     m.update()
     m.addConstrs(n[i][j] >= 0 for i in vars for j in range(num_camiones))
