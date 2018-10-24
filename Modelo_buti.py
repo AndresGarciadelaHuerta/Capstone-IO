@@ -5,10 +5,9 @@ from math import sqrt
 import networkx as nx
 import matplotlib.pyplot as plt
 
-
-def ruteo(grupo, estaciones):
+q = 80
+def ruteo(grupo, estaciones, prints=False):
     m = Model('Modelo_ruteo')
-    q = 80
 
     # model.addvariables
 
@@ -82,6 +81,9 @@ def ruteo(grupo, estaciones):
     # resolver
     m.optimize()
 
+    if prints:
+        graficar_ruteo(grupo, estaciones, m, c)
+
     #for var in m.getVars():
      #   if 'x' in var.varName:
       #      print('Estación {}-> {}'.format(var.varName, var.x))
@@ -102,6 +104,8 @@ def ruteo(grupo, estaciones):
 
     #print(m.objVal)
 
+
+def graficar_ruteo(grupo, estaciones, m, c):
     Grafo = nx.DiGraph()
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
