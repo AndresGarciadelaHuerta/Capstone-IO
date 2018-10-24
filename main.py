@@ -1,10 +1,8 @@
-import numpy
 import simulacion
 import time
-from lectura_json import read_json
-from Clusters import *
-from Modelo_buti import *
 from Problema_integrado import *
+from scipy.stats import t
+import numpy
 
 a = True
 while a:
@@ -84,12 +82,20 @@ while i < numero_simulaciones:
 tiempo3 = time.time()
 promedio_satisfaccion = sum(lista_porcentajes)/len(lista_porcentajes)
 varianza = round((float(numpy.std(lista_porcentajes).item())**2), 4)
+
+#Intervalo de confianza al 95%
+
+studiante = t.interval(.95, numero_simulaciones - 1)
+intervalo_bajo = promedio_satisfaccion + studiante[0] * sqrt(varianza) / sqrt(numero_simulaciones)
+intervalo_alto = promedio_satisfaccion + studiante[1] * sqrt(varianza) / sqrt(numero_simulaciones)
+
 #print(lista_porcentajes)
 print('--------------------------------------------------------------')
 print('Porcentaje Promedio de Satisfaccion de la Demanda: ' + str(
         promedio_satisfaccion) + "%")
 print('Varianza de los Porcentajes de Satisfacción de la Demanda: ' + str(
     varianza))
+print('Intervalo de confianza al 95% de satisfacción: {} <= X <= {}'.format(intervalo_bajo, intervalo_alto))
 print('Tiempo en leer los datos: ' + str(round(tiempo2 - tiempo1, 2))
       + ' segundos.')
 print('Tiempo en simular todas las repeticiones: ' + str(round(

@@ -7,7 +7,7 @@ num_camiones = 2
 M = 3000
 
 
-def opti(estaciones, dic, param=False):
+def opti(estaciones, dic, params=False):
     m = Model('cluster')
     m.update()
     N = {}
@@ -47,7 +47,8 @@ def opti(estaciones, dic, param=False):
         for j in range(num_camiones)))
     m.update()
     m.Params.MIPGap = .01
-    m.Params.timeLimit = 8
+    m.Params.timeLimit = 15
+    m.Params.OutputFlag = 0
     m.optimize()
     resultados = {i: {} for i in range(num_camiones)}
     for z in m.getVars():
@@ -69,7 +70,7 @@ def opti(estaciones, dic, param=False):
 
     return resultados
 
-def opti_final(estaciones):
+def opti_final(estaciones, prints=False):
     N = {}
     S = {}
     final = {i: {} for i in range(8)}
@@ -89,57 +90,58 @@ def opti_final(estaciones):
                 final[cont] = z
                 cont += 1
 
-    total = 0
+    if prints:
+        total = 0
 
-    # for estacion in estaciones.values():
-    #     print('Estación {}: n-> {}: s-> {}'.format(estacion.num, N[estacion.num], S[estacion.num]))
-    #
-    # for grupo in final:
-    #     total += len(final[grupo])
-    #     s_1 = 0
-    #     n = 0
-    #     print('*' * 20)
-    #     print('Grupo {}->{}'.format(grupo, len(final[grupo])))
-    #     for estacion in final[grupo]:
-    #         print('Estacion {}->s:{}->n:{}'.format(estacion, final[grupo][estacion]['s'], final[grupo][estacion]['n']))
-    #         s_1 += final[grupo][estacion]['s']
-    #         n += final[grupo][estacion]['n']
-    #     print('s: {}-> n: {}'.format(s_1, n))
-    #
-    # print('*'*20)
-    # print('Total Estaciones -> {}'.format(total))
-    # print('Duplicados')
-    # for grupo in final:
-    #     for estacion in final[grupo]:
-    #         booleano = False
-    #         for numero in final:
-    #             if grupo != numero:
-    #                 if estacion in final[numero]:
-    #                     booleano = True
-    #         if booleano:
-    #             print('Estacion {}-> Grupo {}'.format(estacion, grupo))
-    #
-    # print('*'*20 + '\nNo estan en niun lado:')
-    #
-    # for estacion in estaciones.values():
-    #     bool=False
-    #     for grupo in final.values():
-    #         if estacion.num in grupo:
-    #             bool = True
-    #     if not bool:
-    #         print('Estación {}'.format(estacion.num))
+        for estacion in estaciones.values():
+            print('Estación {}: n-> {}: s-> {}'.format(estacion.num, N[estacion.num], S[estacion.num]))
+
+        for grupo in final:
+            total += len(final[grupo])
+            s_1 = 0
+            n = 0
+            print('*' * 20)
+            print('Grupo {}->{}'.format(grupo, len(final[grupo])))
+            for estacion in final[grupo]:
+                print('Estacion {}->s:{}->n:{}'.format(estacion, final[grupo][estacion]['s'], final[grupo][estacion]['n']))
+                s_1 += final[grupo][estacion]['s']
+                n += final[grupo][estacion]['n']
+            print('s: {}-> n: {}'.format(s_1, n))
+
+        print('*'*20)
+        print('Total Estaciones -> {}'.format(total))
+        print('Duplicados')
+        for grupo in final:
+            for estacion in final[grupo]:
+                booleano = False
+                for numero in final:
+                    if grupo != numero:
+                        if estacion in final[numero]:
+                            booleano = True
+                if booleano:
+                    print('Estacion {}-> Grupo {}'.format(estacion, grupo))
+
+        print('*'*20 + '\nNo estan en niun lado:')
+
+        for estacion in estaciones.values():
+            bool=False
+            for grupo in final.values():
+                if estacion.num in grupo:
+                    bool = True
+            if not bool:
+                print('Estación {}'.format(estacion.num))
 
     return final
 
 
-def inicio():
-    # estaciones = poblar()
+def inicio(prints=False):
     estaciones = read_json()
     s = Simulador()
     s.estaciones = estaciones
     s.run()
     final = opti_final(estaciones)
-    #pl.graficar(s.estaciones, final)
+    if prints:
+        pl.graficar(s.estaciones, final)
     return final, s
 
 

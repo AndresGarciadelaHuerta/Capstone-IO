@@ -79,6 +79,7 @@ def ruteo(grupo, estaciones, prints=False):
             m.addConstr(x[i][j], GRB.GREATER_EQUAL, 0, 'c4')
 
     # resolver
+    m.Params.OutputFlag = 0
     m.optimize()
 
     if prints:
