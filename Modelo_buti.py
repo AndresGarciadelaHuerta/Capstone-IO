@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=False):
+def ruteo(grupo, estaciones, prints=True):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -94,9 +94,8 @@ def ruteo(grupo, estaciones, prints=False):
     # resolver
     m.Params.OutputFlag = 0
     m.optimize()
-
+    a = identifica(m)
     if prints:
-        a = identifica(m)
         if a != False:
             graficar_ruteo(grupo, estaciones, m, c, a)
         else:
@@ -153,6 +152,7 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
                 labels_pencils[i, j] = '{}'.format(var.x)
         else:
             if var.varName in cond:
+                print('editando')
                 if cond[var.varName] > 0:
                     lista = var.varName.split('_')
                     i = int(lista[1])
@@ -160,7 +160,8 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
                     Grafo.add_edge(i, j, cap=q)
                     Grafo[i][j]['cost'] = round(c[i][j], 2)
 
-            elif 'y' in var.varName and var.x > 0:
+            elif 'y' in var.varName and var.x > 0 and var.varName not in \
+                    cond:
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
