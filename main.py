@@ -47,7 +47,10 @@ while i < numero_simulaciones:
     # Corremos la simulación, los clusters y el ruteo
     s.run()
     clusters = opti_final(estaciones)
+    # aca hacer los subtours para todos
     for grupo in clusters.values():
+        #for elem in grupo:
+            #print(elem)
         ruteo(grupo, s.estaciones)
 
     # Obtenemos las medidas de desempeño

@@ -6,7 +6,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 q = 80
-def ruteo(grupo, estaciones, prints=False):
+
+def ruteo(grupo, estaciones, prints=True):
     m = Model('Modelo_ruteo')
 
     # model.addvariables
@@ -85,19 +86,26 @@ def ruteo(grupo, estaciones, prints=False):
     if prints:
         graficar_ruteo(grupo, estaciones, m, c)
 
-    #for var in m.getVars():
-     #   if 'x' in var.varName:
-      #      print('Estación {}-> {}'.format(var.varName, var.x))
+    vara = []
+    for var in m.getVars():
+        if 'x' in var.varName:
+            vara.append((var.varName, var.x))
+            #print('Estación {}-> {}'.format(var.varName, var.x))
+    print(vara)
 
-    #for var in m.getVars():
-     #   if 'y' in var.varName:
-      #      print('Estación {}-> {}'.format(var.varName, var.x))
+    vari = []
+    for var in m.getVars():
+        if 'y' in var.varName:
+            vari.append((var.varName, var.x))
+            #print('Estación {}-> {}'.format(var.varName, var.x))
+    print(vari)
 
     #print(m.objVal)
 
     # for estacion in grupo:
     #     print('Estacion {}-> n: {}-> s: {}'.format(estacion, grupo[estacion]['n'], grupo[estacion]['s']))
 
+    # Grafo dibujado
     # Grafo dibujado
 
     #for v in m.getVars():
