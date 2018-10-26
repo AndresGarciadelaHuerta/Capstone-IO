@@ -6,7 +6,17 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 q = 80
+
+
 def ruteo(grupo, estaciones, prints=False):
+    lista_aux = []
+    for estacion in grupo:
+        grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
+        grupo[estacion]['s'] = int(round(grupo[estacion]['s'], 1))
+        if grupo[estacion]['n'] + grupo[estacion]['s'] == 0:
+            lista_aux.append(estacion)
+    for estacion in lista_aux:
+        del grupo[estacion]
     m = Model('Modelo_ruteo')
 
     # model.addvariables
@@ -23,7 +33,8 @@ def ruteo(grupo, estaciones, prints=False):
         s[estacion] = grupo[estacion]['s']
         n[estacion] = grupo[estacion]['n']
         for destino in grupo:
-            c[estacion][destino] = .013 * sqrt(estaciones['Estación {}'.format(estacion)].distancias_cuadrado[str(destino)])
+            c[estacion][destino] = .013 * sqrt(
+                estaciones['Estación {}'.format(estacion)].distancias_cuadrado[str(destino)])
         c[0][estacion] = 0
         c[estacion][0] = 0
     s[0] = 0
@@ -61,7 +72,8 @@ def ruteo(grupo, estaciones, prints=False):
     auxiliar.update(grupo)
 
     m.addConstrs(
-        quicksum(x[origen][estacion] for origen in auxiliar) - quicksum(x[estacion][destino] for destino in auxiliar) == n[
+        quicksum(x[origen][estacion] for origen in auxiliar) - quicksum(x[estacion][destino] for destino in auxiliar) ==
+        n[
             estacion] - s[estacion] for estacion in auxiliar)
 
     m.addConstrs(x[i][j] <= q * y[i][j] for i in grupo for j in grupo)
@@ -85,25 +97,25 @@ def ruteo(grupo, estaciones, prints=False):
     if prints:
         graficar_ruteo(grupo, estaciones, m, c)
 
-    #for var in m.getVars():
-     #   if 'x' in var.varName:
-      #      print('Estación {}-> {}'.format(var.varName, var.x))
+    # for var in m.getVars():
+    #   if 'x' in var.varName:
+    #      print('Estación {}-> {}'.format(var.varName, var.x))
 
-    #for var in m.getVars():
-     #   if 'y' in var.varName:
-      #      print('Estación {}-> {}'.format(var.varName, var.x))
+    # for var in m.getVars():
+    #   if 'y' in var.varName:
+    #      print('Estación {}-> {}'.format(var.varName, var.x))
 
-    #print(m.objVal)
+    # print(m.objVal)
 
     # for estacion in grupo:
     #     print('Estacion {}-> n: {}-> s: {}'.format(estacion, grupo[estacion]['n'], grupo[estacion]['s']))
 
     # Grafo dibujado
 
-    #for v in m.getVars():
-     #   print(v.varName, v.x)
+    # for v in m.getVars():
+    #   print(v.varName, v.x)
 
-    #print(m.objVal)
+    # print(m.objVal)
 
 
 def graficar_ruteo(grupo, estaciones, m, c):
