@@ -19,7 +19,7 @@ class Simulador:
         self.demanda_satisfecha = 0
         self.prints = False
 
-    def definir_distribucion_manana(self):
+    def definir_distribucion_manana(self, lista=[]):
         i = 0
         for estacion in self.estaciones.keys():
             if i % 2 == 0:
