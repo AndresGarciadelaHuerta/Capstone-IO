@@ -47,7 +47,7 @@ def opti(estaciones, dic, params=False):
         for j in range(num_camiones)))
     m.update()
     m.Params.MIPGap = .01
-    m.Params.timeLimit = 15
+    m.Params.timeLimit = 2
     m.Params.OutputFlag = 0
     m.optimize()
     resultados = {i: {} for i in range(num_camiones)}
