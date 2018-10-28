@@ -4,11 +4,12 @@ from gurobipy import *
 from math import sqrt
 import networkx as nx
 import matplotlib.pyplot as plt
+from subtours import *
+
 
 q = 80
 
-
-def ruteo(grupo, estaciones, prints=False):
+def ruteo(grupo, estaciones, prints=True):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -93,9 +94,13 @@ def ruteo(grupo, estaciones, prints=False):
     # resolver
     m.Params.OutputFlag = 0
     m.optimize()
-
+    a = identifica(m)
     if prints:
-        graficar_ruteo(grupo, estaciones, m, c)
+        if a != False:
+            graficar_ruteo(grupo, estaciones, m, c, a)
+        else:
+            graficar_ruteo(grupo, estaciones, m, c, 0)
+
 
     # for var in m.getVars():
     #   if 'x' in var.varName:
@@ -105,11 +110,13 @@ def ruteo(grupo, estaciones, prints=False):
     #   if 'y' in var.varName:
     #      print('Estación {}-> {}'.format(var.varName, var.x))
 
+
     # print(m.objVal)
 
     # for estacion in grupo:
     #     print('Estacion {}-> n: {}-> s: {}'.format(estacion, grupo[estacion]['n'], grupo[estacion]['s']))
 
+    # Grafo dibujado
     # Grafo dibujado
 
     # for v in m.getVars():
@@ -118,7 +125,7 @@ def ruteo(grupo, estaciones, prints=False):
     # print(m.objVal)
 
 
-def graficar_ruteo(grupo, estaciones, m, c):
+def graficar_ruteo(grupo, estaciones, m, c, cond):
     Grafo = nx.DiGraph()
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
@@ -126,22 +133,50 @@ def graficar_ruteo(grupo, estaciones, m, c):
     Grafo.add_node(0, pos=(0.0, 0.0))
     labels_pencils = {}
     for var in m.getVars():
-        if 'y' in var.varName and var.x > 0:
-            lista = var.varName.split('_')
-            i = int(lista[1])
-            j = int(lista[2])
-            Grafo.add_edge(i, j, cap=q)
-            Grafo[i][j]['cost'] = round(c[i][j], 2)
-            if '0' in var.varName:
-                for variable in m.getVars():
-                    if 'x_{}_{}'.format(i, j) in variable.varName:
-                        labels_pencils[i, j] = 'home'
+        if cond == 0:
+            if 'y' in var.varName and var.x > 0:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                Grafo.add_edge(i, j, cap=q)
+                Grafo[i][j]['cost'] = round(c[i][j], 2)
+                if '0' in var.varName:
+                    for variable in m.getVars():
+                        if 'x_{}_{}'.format(i, j) in variable.varName:
+                            labels_pencils[i, j] = 'home'
 
-        if 'x' in var.varName and var.x > 0:
-            lista = var.varName.split('_')
-            i = int(lista[1])
-            j = int(lista[2])
-            labels_pencils[i, j] = '{}'.format(var.x)
+            if 'x' in var.varName and var.x > 0:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                labels_pencils[i, j] = '{}'.format(var.x)
+        else:
+            if var.varName in cond:
+                print('editando')
+                if cond[var.varName] > 0:
+                    lista = var.varName.split('_')
+                    i = int(lista[1])
+                    j = int(lista[2])
+                    Grafo.add_edge(i, j, cap=q)
+                    Grafo[i][j]['cost'] = round(c[i][j], 2)
+
+            elif 'y' in var.varName and var.x > 0 and var.varName not in \
+                    cond:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                Grafo.add_edge(i, j, cap=q)
+                Grafo[i][j]['cost'] = round(c[i][j], 2)
+                if '0' in var.varName:
+                    for variable in m.getVars():
+                        if 'x_{}_{}'.format(i, j) in variable.varName:
+                            labels_pencils[i, j] = 'home'
+
+            if 'x' in var.varName and var.x > 0:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                labels_pencils[i, j] = '{}'.format(var.x)
 
     pos = nx.get_node_attributes(Grafo, 'pos')
     plt.figure("Grafo red")
