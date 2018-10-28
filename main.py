@@ -28,15 +28,16 @@ if __name__ == '__main__':
     intervalo_bajo = 0
 
     # Poblamos
+    estaciones = read_json()
+    for est in estaciones.values():
+        est.probas(estaciones)
+    s = simulacion.Simulador()
 
-    while intervalo_bajo < 80:
+    if intervalo_bajo < 80:
         tiempo1 = time.time()
-        estaciones = read_json()
-        s = simulacion.Simulador()
         s.lista_aux = lista_aux
         s.estaciones = estaciones
         s.prints = False
-
         lista_porcentajes = []
         i = 0
         numero_simulaciones = 0

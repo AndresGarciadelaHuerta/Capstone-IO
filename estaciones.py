@@ -1,5 +1,6 @@
 from random import expovariate
 
+
 class Estacion:
 
     def __init__(self, number):
@@ -26,21 +27,32 @@ class Estacion:
         self.demanda_insatisfecha_tarde = 0
         self.demanda_insatisfecha_noche = 0
 
+    def probas(self, diccionarios):
+        self.probs = {}
+        self.probs['manana'] = {i.num: i.tasa_manana * 3 * i.diccionario_manana[self.number] for i in
+                                diccionarios.values()}
+        self.probs['mediodia'] = {i.num: i.tasa_mediodia * 3 * i.diccionario_mediodia[self.number] for i in
+                                  diccionarios.values()}
+        self.probs['tarde'] = {i.num: i.tasa_tarde * 3 * i.diccionario_tarde[self.number] for i in
+                               diccionarios.values()}
+        self.probs['noche'] = {i.num: i.tasa_noche * 3 * i.diccionario_noche[self.number] for i in
+                               diccionarios.values()}
+
     def proxima_llegada_manana(self):
         self.proxima_llegada = expovariate(float(
-                1/self.tasa_manana))
+            1 / self.tasa_manana))
 
     def proxima_llegada_mediodia(self):
         self.proxima_llegada = expovariate(float(
-                1/self.tasa_mediodia))
+            1 / self.tasa_mediodia))
 
     def proxima_llegada_tarde(self):
         self.proxima_llegada = expovariate(float(
-                1/self.tasa_tarde))
+            1 / self.tasa_tarde))
 
     def proxima_llegada_noche(self):
         self.proxima_llegada = expovariate(float(
-                1/self.tasa_noche))
+            1 / self.tasa_noche))
 
     def __repr__(self):
         return str(self.number)
