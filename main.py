@@ -29,12 +29,8 @@ if __name__ == '__main__':
 
     # Poblamos
     estaciones = read_json()
-    # for est in estaciones.values():
-    #     est.probas(estaciones)
-    # with open('flujos.csv', 'w') as file:
-    #     file.write()
-    #     for est in estaciones.keys():
-    #         file.write()
+    for est in estaciones.values():
+        est.probas(estaciones)
 
     s = simulacion.Simulador()
 
