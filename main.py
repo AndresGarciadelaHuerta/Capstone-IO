@@ -3,37 +3,46 @@ import time
 from Problema_integrado import *
 from scipy.stats import t
 import numpy
+import csv
 
 if __name__ == '__main__':
-    # lista_aux = []
-    # dist = open('hola.csv', 'r')
-    # for i in dist:
-    #     lista_aux.append(int(i))
+    lista_aux = []
+    with open('hola.csv', 'r', encoding='utf-8') as file:
+        csv_reader = csv.reader(file, delimiter=',')
+        for i in csv_reader:
+            lista_aux.append(int(i[0].strip('\ufeff')))
 
     # lista_aux = [27, 15, 27, 19, 4, 6, 26, 21, 4, 21, 22, 27, 15, 23, 25, 9, 13, 20, 4, 15, 4, 26, 2, 25, 10, 27, 25, 6,
     #              12, 9, 24, 11, 10, 41, 42, 31, 4, 5, 13, 1, 10, 22, 26, 36, 29, 29, 19, 46, 23, 6, 11, 37, 45, 6, 5,
     #              11, 12, 36, 0, 19, 33, 2, 5, 5, 11, 26, 19, 50, 19, 25, 3, 7, 21, 0, 26, 10, 6, 3, 35, 9, 39, 42, 21,
     #              15, 4, 13, 8, 14, 40, 10, 4, 29]
 
-    lista_aux = [27, 15, 28, 19, 4, 5, 26, 21, 4, 23, 21, 27, 13, 26, 25, 9, 13, 20, 4, 14, 4, 26, 1, 26, 8, 27, 26, 5,
-                 11, 7, 23, 10, 8, 42, 44, 31, 4, 5, 13, 0, 10, 22, 26, 35, 30, 29, 18, 47, 25, 6, 11, 37, 45, 6, 4, 11,
-                 9, 36, 0, 17, 36, 2, 4, 5, 11, 27, 19, 52, 19, 27, 3, 7, 21, 0, 27, 10, 6, 3, 37, 9, 39, 40, 22, 15, 4,
-                 13, 8, 13, 40, 9, 4, 32]
+    # lista_aux = [27, 15, 28, 19, 4, 5, 26, 21, 4, 23, 21, 27, 13, 26, 25, 9, 13, 20, 4, 14, 4, 26, 1, 26, 8, 27, 26, 5,
+    #              11, 7, 23, 10, 8, 42, 44, 31, 4, 5, 13, 0, 10, 22, 26, 35, 30, 29, 18, 47, 25, 6, 11, 37, 45, 6, 4, 11,
+    #              9, 36, 0, 17, 36, 2, 4, 5, 11, 27, 19, 52, 19, 27, 3, 7, 21, 0, 27, 10, 6, 3, 37, 9, 39, 40, 22, 15, 4,
+    #              13, 8, 13, 40, 9, 4, 32]
 
     print(lista_aux)
+    print(sum(lista_aux))
 
     intervalo_bajo = 0
 
     # Poblamos
+    estaciones = read_json()
+    # for est in estaciones.values():
+    #     est.probas(estaciones)
+    # with open('flujos.csv', 'w') as file:
+    #     file.write()
+    #     for est in estaciones.keys():
+    #         file.write()
 
-    while intervalo_bajo < 80:
+    s = simulacion.Simulador()
+
+    if intervalo_bajo < 80:
         tiempo1 = time.time()
-        estaciones = read_json()
-        s = simulacion.Simulador()
         s.lista_aux = lista_aux
         s.estaciones = estaciones
         s.prints = False
-
         lista_porcentajes = []
         i = 0
         numero_simulaciones = 0
