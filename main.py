@@ -7,15 +7,17 @@ import csv
 
 lista = []
 contador_menores = 0
+
+
 def distribucion_inicial_estacion(estacion, estaciones):
     estacion.probas(estaciones)
     llegan_manana = sum(estacion.probs['manana'].values()) * .8
-    #print(llegan_manana)
+    # print(llegan_manana)
     llegan_mediodia = sum(estacion.probs['mediodia'].values()) * .8
     llegan_tarde = sum(estacion.probs['tarde'].values()) * .8
     llegan_noche = sum(estacion.probs['noche'].values()) * .8
     salen_manana = 3 * estacion.tasa_manana * .8
-    #print(salen_manana)
+    # print(salen_manana)
     salen_mediodia = 3 * estacion.tasa_mediodia * .8
     salen_tarde = 3 * estacion.tasa_tarde * .8
     salen_noche = 3 * estacion.tasa_noche * .8
@@ -52,37 +54,18 @@ def distribucion_inicial_estacion(estacion, estaciones):
     #     if suma > 20:
     #         inicial = 17
     if suma_ida > 0 and suma_vuelta > 0:
-        inicial = int(round(((suma_ida + suma_vuelta)), 0))
+        inicial = 10
     elif suma_ida > 0 and suma_vuelta < 0:
-        inicial = int(round((-suma_vuelta-suma_ida * -1)/4, 0))
+        inicial = int(-suma_ida - suma_vuelta) + 10
     elif suma_ida < 0 and suma_vuelta > 0:
-        inicial = int(round(suma_ida * -1, 0)) + 10
+        inicial = int(-suma_ida) + 10
     elif suma_ida < 0 and suma_vuelta < 0:
-        inicial = int(round((suma_ida + suma_vuelta) * -1, 0))
+        inicial = int(-suma_ida - suma_vuelta) + 15
 
-
-    return inicial
-
-
+    return max(5, inicial)
 
 
 if __name__ == '__main__':
-    #lista_aux = []
-    #with open('hola.csv', 'r', encoding='utf-8') as file:
-     #   csv_reader = csv.reader(file, delimiter=',')
-      #  for i in csv_reader:
-       #     lista_aux.append(int(i[0].strip('\ufeff')))
-
-    # lista_aux = [27, 15, 27, 19, 4, 6, 26, 21, 4, 21, 22, 27, 15, 23, 25, 9, 13, 20, 4, 15, 4, 26, 2, 25, 10, 27, 25, 6,
-    #              12, 9, 24, 11, 10, 41, 42, 31, 4, 5, 13, 1, 10, 22, 26, 36, 29, 29, 19, 46, 23, 6, 11, 37, 45, 6, 5,
-    #              11, 12, 36, 0, 19, 33, 2, 5, 5, 11, 26, 19, 50, 19, 25, 3, 7, 21, 0, 26, 10, 6, 3, 35, 9, 39, 42, 21,
-    #              15, 4, 13, 8, 14, 40, 10, 4, 29]
-
-    # lista_aux = [27, 15, 28, 19, 4, 5, 26, 21, 4, 23, 21, 27, 13, 26, 25, 9, 13, 20, 4, 14, 4, 26, 1, 26, 8, 27, 26, 5,
-    #              11, 7, 23, 10, 8, 42, 44, 31, 4, 5, 13, 0, 10, 22, 26, 35, 30, 29, 18, 47, 25, 6, 11, 37, 45, 6, 4, 11,
-    #              9, 36, 0, 17, 36, 2, 4, 5, 11, 27, 19, 52, 19, 27, 3, 7, 21, 0, 27, 10, 6, 3, 37, 9, 39, 40, 22, 15, 4,
-    #              13, 8, 13, 40, 9, 4, 32]
-
 
     intervalo_bajo = 0
 
@@ -93,7 +76,9 @@ if __name__ == '__main__':
 
     s = simulacion.Simulador()
 
+    # Esto es para buscar base factible
     if intervalo_bajo < 80:
+        objetivo = 0
         lista_2 = []
         tiempo1 = time.time()
         s.estaciones = estaciones
@@ -112,10 +97,6 @@ if __name__ == '__main__':
         intervalo_bajo = 0
         tiempo2 = time.time()
 
-        # Reajuste por sobra/necesidad
-        # demandas_por_estacion = {i: 0 for i in range(1, 93)}
-
-        # Reajuste por satisfaccion
         demandas_por_estacion = {
             i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana', 'mediodia', 'tarde', 'noche')} for i in
             range(1, 93)}
@@ -123,9 +104,9 @@ if __name__ == '__main__':
         while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 5:
             numero_simulaciones += 1
 
-            # print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
-            # print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
-            # print(intervalo_bajo, intervalo_alto)
+            print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
+            print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
+            print(intervalo_bajo, intervalo_alto)
 
             # Reseteamos
             s.tiempo_actual = 0
@@ -141,10 +122,10 @@ if __name__ == '__main__':
 
             # Corremos la simulación, los clusters y el ruteo
             s.run()
-            if False:
+            if 1:
                 clusters = opti_final(estaciones)
                 for grupo in clusters.values():
-                    ruteo(grupo, s.estaciones)
+                    objetivo += ruteo(grupo, s.estaciones)
 
             # Obtenemos las medidas de desempeño
 
@@ -167,10 +148,6 @@ if __name__ == '__main__':
                 demandas_por_estacion[estacion.num]['tarde'] += estacion.demanda_insatisfecha_tarde
                 demandas_por_estacion[estacion.num]['noche'] += estacion.demanda_insatisfecha_noche
 
-            # Reajuste por sobras/necesidad
-            # for estacion in s.estaciones.values():
-            #     demandas_por_estacion[estacion.num] += estacion.inventario - estacion.inv_manana
-
             promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
             varianza = round((float(numpy.std(lista_porcentajes).item()) ** 2), 4)
 
@@ -192,7 +169,7 @@ if __name__ == '__main__':
 
         # reajuste por satisfaccion
         demandas_estacion_ordenada = sorted(demandas_por_estacion,
-                                            key=lambda est: (demandas_por_estacion[est]['insatisfechos']))
+                                            key=lambda x: (demandas_por_estacion[x]['insatisfechos']))
 
         # Reajuste por sobras/necesidad
         # demandas_estacion_ordenada = sorted(demandas_por_estacion, key=lambda est: demandas_por_estacion[est])
@@ -202,19 +179,6 @@ if __name__ == '__main__':
             print(demandas_estacion_ordenada[-5:])
             print('\nLas 5 estaciones con mayor cantidad de insatisfaccion de demanda :')
             print(demandas_estacion_ordenada[:5])
-        #
-        # book = open('satisfacciones.csv', 'w')
-        #
-        # book.write('Estacion, inventario, manana, mediodia, tarde, noche\n')
-        #
-        # for est in estaciones.keys():
-        #     num = estaciones[est].num
-        #     book.write('{}, {}, {}, {}, {}, {}\n'.format(num, lista_aux[num - 1], demandas_por_estacion[num]['manana'],
-        #                                                  demandas_por_estacion[num]['mediodia'],
-        #                                                  demandas_por_estacion[num]['tarde'],
-        #                                                  demandas_por_estacion[num]['noche']))
-        #
-        # book.close()
 
         if intervalo_bajo < 80:
             numero_de_mayores = 2
@@ -237,6 +201,7 @@ if __name__ == '__main__':
         print('Varianza de los Porcentajes de Satisfacción de la Demanda: ' + str(
             varianza))
         print('Intervalo de confianza al 95% de satisfacción: {} <= X <= {}'.format(intervalo_bajo, intervalo_alto))
+        print('Funcion Objetivo: {}'.format(objetivo / numero_simulaciones))
         print('Tiempo en leer los datos: ' + str(round(tiempo2 - tiempo1, 2))
               + ' segundos.')
         print('Tiempo en simular todas las repeticiones: ' + str(round(
