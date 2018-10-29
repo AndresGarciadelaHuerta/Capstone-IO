@@ -10,13 +10,21 @@ class Simulador:
         self.tiempo_anterior = 0
         self.tiempo_actual = 0
         self.contador_dias = 0
-        self.cola = []
+        self._cola = []
         self.estaciones = {}
         self.velocidad_bicicleta = 40
         self.demanda_insatisfecha = 0
         self.demanda_satisfecha = 0
         self.prints = False
         self.lista_aux = None
+
+    @property
+    def cola(self):
+        self._cola.sort(key=lambda x: x[0])
+        return self._cola
+    @cola.setter
+    def cola(self, lista):
+        self._cola = lista
 
     def definir_distribucion_manana(self):
         for estacion in self.estaciones.keys():
@@ -30,11 +38,10 @@ class Simulador:
     def llegadas_personas_manana(self):
 
         for estacion in self.estaciones.keys():
-            self.estaciones[estacion].proxima_llegada = int((8 * 60) + expovariate(
-                float(1 / self.estaciones[estacion].tasa_manana)))
+            self.estaciones[estacion].proxima_llegada_manana()
+            self.estaciones[estacion].proxima_llegada += int((8 * 60))
             self.cola.append((int(self.estaciones[estacion].proxima_llegada),
                               "Inicio persona", estacion))
-            self.cola.sort()
 
     def tiempo_viaje_persona(self, estacion1, estacion2):
         a = [float(self.estaciones[estacion1].x), float(self.estaciones[estacion1].y)]
@@ -144,13 +151,11 @@ class Simulador:
                                                       str(estacion_llegada[0]))
                     self.cola.pop(0)
                     self.cola.append(tupla)
-                    self.cola.sort()
 
                 # Definimos nueva llegada
                 if self.tiempo_actual < 1200 and tiempo_nueva_llegada <= 1200:
                     tupla = (tiempo_nueva_llegada, "Inicio persona", evento[2])
                     self.cola.append(tupla)
-                    self.cola.sort()
 
 
 

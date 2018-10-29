@@ -39,20 +39,16 @@ class Estacion:
                                diccionarios.values()}
 
     def proxima_llegada_manana(self):
-        self.proxima_llegada = expovariate(float(
-            1 / self.tasa_manana))
+        self.proxima_llegada = expovariate(self.tasa_manana / 60)
 
     def proxima_llegada_mediodia(self):
-        self.proxima_llegada = expovariate(float(
-            1 / self.tasa_mediodia))
+        self.proxima_llegada = expovariate(self.tasa_mediodia / 60)
 
     def proxima_llegada_tarde(self):
-        self.proxima_llegada = expovariate(float(
-            1 / self.tasa_tarde))
+        self.proxima_llegada = expovariate(self.tasa_tarde / 60)
 
     def proxima_llegada_noche(self):
-        self.proxima_llegada = expovariate(float(
-            1 / self.tasa_noche))
+        self.proxima_llegada = expovariate(self.tasa_noche / 60)
 
     def __repr__(self):
         return str(self.number)
