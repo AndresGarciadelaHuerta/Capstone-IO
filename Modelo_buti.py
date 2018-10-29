@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=True):
+def ruteo(grupo, estaciones, prints=False):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -101,6 +101,8 @@ def ruteo(grupo, estaciones, prints=True):
         else:
             graficar_ruteo(grupo, estaciones, m, c, 0)
 
+    return m.objVal
+
 
     # for var in m.getVars():
     #   if 'x' in var.varName:
@@ -140,7 +142,7 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
                 j = int(lista[2])
                 Grafo.add_edge(i, j, cap=q)
                 Grafo[i][j]['cost'] = round(c[i][j], 2)
-                if '0' in var.varName:
+                if '_0' in var.varName:
                     for variable in m.getVars():
                         if 'x_{}_{}'.format(i, j) in variable.varName:
                             labels_pencils[i, j] = 'home'

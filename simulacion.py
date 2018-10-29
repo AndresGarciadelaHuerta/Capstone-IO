@@ -70,10 +70,6 @@ class Simulador:
             evento = self.cola[0]
             self.tiempo_actual = evento[0]
 
-            # if self.tiempo_actual > 1200:
-            #   self.contador_dias = 1
-            #  return
-
             if evento[1] == "Inicio persona":
                 if self.estaciones[evento[2]].inventario == 0:
                     if self.prints:
@@ -165,9 +161,11 @@ class Simulador:
                 self.estaciones[evento[2]].inventario += 1
                 self.cola.pop(0)
 
-# estaciones = poblar()
-# s = Simulador()
-# s.estaciones = estaciones
-# s.prints = True
-# s.run()
-# print(s.demanda_satisfecha/(s.demanda_insatisfecha + s.demanda_satisfecha))
+
+if __name__ == '__main__':
+    estaciones = poblar()
+    s = Simulador()
+    s.estaciones = estaciones
+    s.prints = True
+    s.run()
+    print(s.demanda_satisfecha/(s.demanda_insatisfecha + s.demanda_satisfecha))

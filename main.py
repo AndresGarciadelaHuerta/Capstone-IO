@@ -76,8 +76,9 @@ if __name__ == '__main__':
 
     s = simulacion.Simulador()
 
-    #Esto es para buscar base factible
+    # Esto es para buscar base factible
     if intervalo_bajo < 80:
+        objetivo = 0
         lista_2 = []
         tiempo1 = time.time()
         s.estaciones = estaciones
@@ -124,7 +125,7 @@ if __name__ == '__main__':
             if 1:
                 clusters = opti_final(estaciones)
                 for grupo in clusters.values():
-                    ruteo(grupo, s.estaciones)
+                    objetivo += ruteo(grupo, s.estaciones)
 
             # Obtenemos las medidas de desempeño
 
@@ -200,6 +201,7 @@ if __name__ == '__main__':
         print('Varianza de los Porcentajes de Satisfacción de la Demanda: ' + str(
             varianza))
         print('Intervalo de confianza al 95% de satisfacción: {} <= X <= {}'.format(intervalo_bajo, intervalo_alto))
+        print('Funcion Objetivo: {}'.format(objetivo / numero_simulaciones))
         print('Tiempo en leer los datos: ' + str(round(tiempo2 - tiempo1, 2))
               + ' segundos.')
         print('Tiempo en simular todas las repeticiones: ' + str(round(
