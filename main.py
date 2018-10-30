@@ -54,11 +54,11 @@ def distribucion_inicial_estacion(estacion, estaciones):
     #     if suma > 20:
     #         inicial = 17
     if suma_ida > 0 and suma_vuelta > 0:
-        inicial = 10
+        inicial = 11
     elif suma_ida > 0 and suma_vuelta < 0:
         inicial = int(-suma_ida - suma_vuelta) + 10
     elif suma_ida < 0 and suma_vuelta > 0:
-        inicial = int(-suma_ida) + 10
+        inicial = int(-suma_ida) + 11
     elif suma_ida < 0 and suma_vuelta < 0:
         inicial = int(-suma_ida - suma_vuelta) + 15
 
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     # Esto es para buscar base factible
     if intervalo_bajo < 80:
-        objetivo = 0
+        objetivo = []
         lista_2 = []
         tiempo1 = time.time()
         s.estaciones = estaciones
@@ -88,7 +88,6 @@ if __name__ == '__main__':
         print(sum(lista_2))
         lista_aux = lista_2
         s.lista_aux = lista_aux
-
         s.prints = False
         lista_porcentajes = []
         i = 0
@@ -125,7 +124,7 @@ if __name__ == '__main__':
             if 1:
                 clusters = opti_final(estaciones)
                 for grupo in clusters.values():
-                    objetivo += ruteo(grupo, s.estaciones)
+                    objetivo.append(ruteo(grupo, s.estaciones))
 
             # Obtenemos las medidas de desempeño
 
@@ -160,12 +159,15 @@ if __name__ == '__main__':
         tiempo3 = time.time()
         promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
         varianza = round((float(numpy.std(lista_porcentajes).item()) ** 2), 4)
+        var_objetivo = round((float(numpy.std(objetivo).item()) ** 2), 4)
 
         # Intervalo de confianza al 95%
 
         studiante = t.interval(.95, numero_simulaciones - 1)
         intervalo_bajo = promedio_satisfaccion + studiante[0] * sqrt(varianza) / sqrt(numero_simulaciones)
         intervalo_alto = promedio_satisfaccion + studiante[1] * sqrt(varianza) / sqrt(numero_simulaciones)
+        bajo_objetivo = sum(objetivo) / numero_simulaciones + studiante[0] * sqrt(var_objetivo) / sqrt(numero_simulaciones)
+        alto_objetivo = sum(objetivo) / numero_simulaciones + studiante[1] * sqrt(var_objetivo) / sqrt(numero_simulaciones)
 
         # reajuste por satisfaccion
         demandas_estacion_ordenada = sorted(demandas_por_estacion,
@@ -201,7 +203,8 @@ if __name__ == '__main__':
         print('Varianza de los Porcentajes de Satisfacción de la Demanda: ' + str(
             varianza))
         print('Intervalo de confianza al 95% de satisfacción: {} <= X <= {}'.format(intervalo_bajo, intervalo_alto))
-        print('Funcion Objetivo: {}'.format(objetivo / numero_simulaciones))
+        print('Funcion Objetivo: {}'.format(sum(objetivo) / numero_simulaciones))
+        print('Intervalo al 95%: {} <= X <= {}'.format(bajo_objetivo, alto_objetivo))
         print('Tiempo en leer los datos: ' + str(round(tiempo2 - tiempo1, 2))
               + ' segundos.')
         print('Tiempo en simular todas las repeticiones: ' + str(round(
