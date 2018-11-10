@@ -28,6 +28,7 @@ class Estacion:
         self.demanda_insatisfecha_noche = 0
 
     def probas(self, diccionarios):
+        #Diccionario con las llegadas esperadas de cada estacion
         self.probs = {}
         self.probs['manana'] = {i.num: i.tasa_manana * 3 * i.diccionario_manana[self.number] for i in
                                 diccionarios.values()}

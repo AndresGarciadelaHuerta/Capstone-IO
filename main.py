@@ -73,11 +73,10 @@ if __name__ == '__main__':
     estaciones = read_json()
     for est in estaciones.values():
         est.probas(estaciones)
-
     s = simulacion.Simulador()
 
     # Esto es para buscar base factible
-    if intervalo_bajo < 80:
+    if False:
         objetivo = []
         lista_2 = []
         tiempo1 = time.time()
