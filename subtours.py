@@ -52,11 +52,11 @@ def identifica(m):
                 if len(sirven) != 0:
                     con = arregla(par, sirven, x, y)
                     #print(orden)
-                    print('Si tiene')
+                    #print('Si tiene')
                     return con
                 else:
                     #print(orden)
-                    print('No tiene')
+                    #print('No tiene')
                     return False
 
             if ruta[0] == i:
