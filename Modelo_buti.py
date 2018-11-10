@@ -72,18 +72,26 @@ def ruteo(grupo, estaciones, prints=False):
     auxiliar = {0: ''}
     auxiliar.update(grupo)
 
+
+    #Cumplimiento de la demanda
     m.addConstrs(
         quicksum(x[origen][estacion] for origen in auxiliar) - quicksum(x[estacion][destino] for destino in auxiliar) ==
-        n[
-            estacion] - s[estacion] for estacion in auxiliar)
+        n[estacion] - s[estacion] for estacion in auxiliar)
 
+    #Restriccion de carga del camion
     m.addConstrs(x[i][j] <= q * y[i][j] for i in grupo for j in grupo)
+
+    #Rutas de HOME
     m.addConstrs(x[0][i] == 0 for i in grupo)
     m.addConstrs(x[i][0] == 0 for i in grupo)
 
+    #Viajar a si mismo es cero
     m.addConstrs(y[nodo][nodo] == 0 for nodo in auxiliar)
 
+    #Si entra a un nodo, entonces sale
     m.addConstrs(quicksum(y[i][j] for i in auxiliar) - quicksum(y[j][k] for k in auxiliar) == 0 for j in auxiliar)
+
+    #Restricciones de flujo una sola vez a HOME
     m.addConstr(quicksum(y[0][nodo] for nodo in grupo) == 1)
     m.addConstr(quicksum(y[nodo][0] for nodo in grupo) == 1)
 

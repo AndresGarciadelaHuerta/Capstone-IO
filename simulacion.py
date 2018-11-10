@@ -6,7 +6,7 @@ from math import sqrt
 
 class Simulador:
 
-    def __init__(self):
+    def __init__(self, lista_aux=[]):
         self.tiempo_anterior = 0
         self.tiempo_actual = 0
         self.contador_dias = 0
@@ -16,7 +16,8 @@ class Simulador:
         self.demanda_insatisfecha = 0
         self.demanda_satisfecha = 0
         self.prints = False
-        self.lista_aux = None
+        self.lista_aux = lista_aux
+        self.definir_distribucion_manana()
 
     @property
     def cola(self):
@@ -27,6 +28,7 @@ class Simulador:
         self._cola = lista
 
     def definir_distribucion_manana(self):
+        diferencia = 1653 - sum()
         for estacion in self.estaciones.keys():
             self.estaciones[estacion].inventario = self.lista_aux[self.estaciones[estacion].num - 1]
             self.estaciones[estacion].inv_manana = self.lista_aux[self.estaciones[estacion].num - 1]
@@ -34,6 +36,7 @@ class Simulador:
             self.estaciones[estacion].demanda_insatisfecha_mediodia = 0
             self.estaciones[estacion].demanda_insatisfecha_tarde = 0
             self.estaciones[estacion].demanda_insatisfecha_noche = 0
+
 
     def llegadas_personas_manana(self):
 
@@ -58,7 +61,7 @@ class Simulador:
                 Metodo que hace la simulacion.
                 Retorna None
         """
-        self.definir_distribucion_manana()
+        #self.definir_distribucion_manana()
         self.llegadas_personas_manana()
 
         while self.contador_dias < 1:

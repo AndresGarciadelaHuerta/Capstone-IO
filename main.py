@@ -3,7 +3,6 @@ import time
 from Problema_integrado import *
 from scipy.stats import t
 import numpy
-import csv
 
 lista = []
 contador_menores = 0
@@ -12,12 +11,10 @@ contador_menores = 0
 def distribucion_inicial_estacion(estacion, estaciones):
     estacion.probas(estaciones)
     llegan_manana = sum(estacion.probs['manana'].values())
-    # print(llegan_manana)
     llegan_mediodia = sum(estacion.probs['mediodia'].values())
     llegan_tarde = sum(estacion.probs['tarde'].values())
     llegan_noche = sum(estacion.probs['noche'].values())
     salen_manana = 3 * estacion.tasa_manana
-    # print(salen_manana)
     salen_mediodia = 3 * estacion.tasa_mediodia
     salen_tarde = 3 * estacion.tasa_tarde
     salen_noche = 3 * estacion.tasa_noche
@@ -29,40 +26,16 @@ def distribucion_inicial_estacion(estacion, estaciones):
     suma_ida = manana + mediodia
     suma_vuelta = tarde + noche
     suma = manana + mediodia + tarde + noche
-    # if manana < 0:
-    #     inicial += manana
-    # #print(inicial)
-    # if mediodia < 0:
-    #     inicial += mediodia
-    # if tarde < 0:
-    #     inicial += tarde
-    # if noche < 0:
-    #     inicial += noche
-    # #print(inicial)
-    # #print('-------------')
-    # if suma < 0:
-    #     inicial = int(round(suma * -1, 0)) + 40
-    # else:
-    #     if suma < 5:
-    #         inicial = 25
-    #     if suma > 5:
-    #         inicial = 20
-    #     if suma > 10:
-    #         inicial = 15
-    #     if suma > 15:
-    #         inicial = 15
-    #     if suma > 20:
-    #         inicial = 17
     if suma_ida > 0 and suma_vuelta > 0:
-        inicial = max(int(llegan_manana / 3), 2)
+        inicial = max(int(llegan_manana / 3) - 3, 2)
     elif suma_ida > 0 and suma_vuelta < 0:
-        inicial = int(-suma_ida - suma_vuelta) + max(int(llegan_manana / 3), 2)
+        inicial = int(-suma_ida - suma_vuelta) + max(int(llegan_manana / 3) - 2, 2)
     elif suma_ida < 0 and suma_vuelta > 0:
-        inicial = int(-suma_ida) + 5
+        inicial = int(-suma_ida) + 10
     elif suma_ida < 0 and suma_vuelta < 0:
         inicial = int(-suma_ida - suma_vuelta) + 10
 
-    return max(5, inicial)
+    return min(max(2, inicial), 60)
 
 
 if __name__ == '__main__':
@@ -74,31 +47,33 @@ if __name__ == '__main__':
 
     for est in estaciones.values():
         est.probas(estaciones)
-    s = simulacion.Simulador()
-    s.estaciones = estaciones
 
     # Hacemos listas con las estaciones que reciben y pierden bicis
     pierden = [i.num for i in estaciones.values() if i.flujo_total < 0]
     ganan = [i.num for i in estaciones.values() if i.flujo_total > 0]
 
     # Creamos la dist inicial
-    lista_2 = [7, 21, 12, 12, 29, 32, 10, 17, 18, 10, 11, 10, 22, 11, 11, 33, 12, 12, 27, 19, 26, 11, 27, 11, 38, 11,
-               11, 23, 13, 16, 11, 36, 11, 5, 5, 11, 35, 19, 11, 24, 34, 18, 11, 11, 8, 11, 11, 10, 5, 15, 14, 11, 11,
-               21, 35, 19, 20, 6, 48, 13, 5, 32, 19, 35, 17, 11, 12, 6, 11, 7, 18, 15, 12, 41, 6, 11, 29, 53, 5, 19, 11,
-               11, 11, 11, 20, 11, 33, 19, 11, 22, 34, 66]
+    lista_2 = [2, 20, 5, 10, 33, 31, 7, 14, 19, 7, 3, 5, 19, 5, 5, 33, 6, 6, 25, 20, 29, 4, 30, 4, 39, 5, 5, 25, 11, 16,
+               5, 36, 6, 2, 2, 5, 35, 20, 6, 27, 34, 16, 5, 3, 3, 5, 6, 6, 2, 18, 13, 5, 0, 18, 36, 16, 21, 2, 52, 10,
+               2, 36, 20, 35, 17, 5, 5, 2, 6, 3, 19, 15, 9, 47, 2, 6, 27, 57, 2, 15, 6, 3, 5, 9, 21, 10, 32, 21, 1, 24,
+               34, 60]
 
-    lista_2 = []
+    s = simulacion.Simulador(lista_2)
+    s.estaciones = estaciones
 
-    for estacion in s.estaciones.values():
-        lista_2.append(distribucion_inicial_estacion(estacion, s.estaciones))
+    # for estacion in s.estaciones.values():
+    #     lista_2.append(distribucion_inicial_estacion(estacion, s.estaciones))
     print(sum(lista_2))
     s.lista_aux = lista_2
 
     prom_anterior = 0
 
+    intervalo_bajo = 100
+
     # Esto es para buscar base factible
-    for i in range(10):
+    if True:
         print(s.lista_aux)
+        print(sum(s.lista_aux))
         objetivo = []
         tiempo1 = time.time()
         s.prints = False
@@ -135,9 +110,9 @@ if __name__ == '__main__':
             # Corremos la simulación, los clusters y el ruteo
             s.run()
             if 1:
-                clusters = opti_final(estaciones)
+                clusters = opti_final(estaciones, 1)
                 for grupo in clusters.values():
-                    objetivo.append(ruteo(grupo, s.estaciones))
+                    objetivo.append(ruteo(grupo, s.estaciones, 1))
 
             # Obtenemos las medidas de desempeño
 
@@ -223,21 +198,4 @@ if __name__ == '__main__':
         print('Tiempo en simular todas las repeticiones: ' + str(round(
             tiempo3 - tiempo2, 2)) + ' segundos.')
 
-        # Reacomodo de bicis de acuerdo a estatus
-        a_quitar = demandas_estacion_ordenada[0]
-        cont = 1
-        while a_quitar not in pierden:
-            a_quitar = demandas_estacion_ordenada[cont]
-            cont += 1
-
-        a_dar = demandas_estacion_ordenada[-1]
-        con = -1
-        while a_dar not in ganan:
-            a_dar = demandas_estacion_ordenada[cont - 1]
-            cont -= 1
-
-        s.lista_aux[a_quitar - 1] -= 1
-        s.lista_aux[a_dar - 1] += 1
-        print(a_quitar, a_dar)
-        print('Promedio anterior {}\nNuevo {}'.format(prom_anterior, sum(objetivo) / numero_simulaciones))
-        prom_anterior = sum(objetivo) / numero_simulaciones
+        s.lista_aux[demandas_estacion_ordenada[0] - 1] -= 1
