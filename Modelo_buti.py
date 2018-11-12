@@ -109,6 +109,9 @@ def ruteo(grupo, estaciones, prints=False):
         else:
             graficar_ruteo(grupo, estaciones, m, c, 0)
 
+    for numero in grupo:
+        estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
+
     return m.objVal
 
 
@@ -140,11 +143,11 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
-    Grafo.add_node(0, pos=(0.0, 0.0))
+    #Grafo.add_node(0, pos=(0.0, 0.0))
     labels_pencils = {}
     for var in m.getVars():
         if cond == 0:
-            if 'y' in var.varName and var.x > 0:
+            if 'y' in var.varName and var.x > 0 and '_0' not in var.varName:
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
@@ -190,7 +193,7 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
 
     pos = nx.get_node_attributes(Grafo, 'pos')
     plt.figure("Grafo red")
-    nx.draw(Grafo, pos, with_labels=True, node_size=500, node_color="blue")
+    nx.draw(Grafo, pos, with_labels=True, node_size=500, node_color="pink")
 
     nx.draw_networkx_edge_labels(Grafo, pos, edge_labels=labels_pencils)
     plt.show()

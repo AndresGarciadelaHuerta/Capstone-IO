@@ -15,5 +15,5 @@ def graficar(estaciones, resultados):
     plot.scatter(x, y, c=colores)
     plot.xlabel("Posicion en x")
     plot.ylabel("Posicion en y")
-    plot.title("posicion clusters")
+    plot.title("Composición Geográfica de las Zonas")
     plot.show()
