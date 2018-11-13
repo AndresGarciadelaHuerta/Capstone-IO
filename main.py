@@ -76,7 +76,7 @@ if __name__ == '__main__':
     s = simulacion.Simulador()
 
     # Esto es para buscar base factible
-    if False:
+    if True:
         objetivo = []
         lista_2 = []
         tiempo1 = time.time()
@@ -99,9 +99,10 @@ if __name__ == '__main__':
             i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana', 'mediodia', 'tarde', 'noche')} for i in
             range(1, 93)}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 5:
+        """while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 5:
+            numero_simulaciones += 1"""
+        while True:
             numero_simulaciones += 1
-
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
             print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
             print(intervalo_bajo, intervalo_alto)
