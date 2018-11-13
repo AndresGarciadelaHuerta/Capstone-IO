@@ -98,7 +98,7 @@ def ruteo(grupo, estaciones, prints=True):
     if prints:
         if a != False:
             # con subtour
-            if len(a) >= 2:
+            if len(a) > 0:
                 graficar_ruteo(grupo, estaciones, m, c, 0)
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
@@ -131,7 +131,7 @@ def ruteo(grupo, estaciones, prints=True):
 
     # print(m.objVal)
 
-def graficar_ruteo(grupo, estaciones, m, c, cond):
+def graficar_ruteo(grupo, estaciones, m, c, con):
     Grafo = nx.DiGraph()
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
@@ -139,7 +139,7 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
     Grafo.add_node(0, pos=(0.0, 0.0))
     labels_pencils = {}
     for var in m.getVars():
-        if cond == 0:
+        if con == 0:
             if 'y' in var.varName and var.x > 0:
                 lista = var.varName.split('_')
                 i = int(lista[1])
@@ -157,33 +157,32 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
                 j = int(lista[2])
                 labels_pencils[i, j] = '{}'.format(var.x)
         else:
-            for con in cond:
-                if var.varName in con:
-                    print('editando')
-                    if con[var.varName] > 0:
-                        lista = var.varName.split('_')
-                        i = int(lista[1])
-                        j = int(lista[2])
-                        Grafo.add_edge(i, j, cap=q)
-                        Grafo[i][j]['cost'] = round(c[i][j], 2)
-
-                elif 'y' in var.varName and var.x > 0 and var.varName not in \
-                        con:
+            if var.varName in con:
+                print('editando')
+                if con[var.varName] > 0:
                     lista = var.varName.split('_')
                     i = int(lista[1])
                     j = int(lista[2])
                     Grafo.add_edge(i, j, cap=q)
                     Grafo[i][j]['cost'] = round(c[i][j], 2)
-                    if '_0' in var.varName:
-                        for variable in m.getVars():
-                            if 'x_{}_{}'.format(i, j) in variable.varName:
-                                labels_pencils[i, j] = 'home'
 
-                if 'x' in var.varName and var.x > 0:
-                    lista = var.varName.split('_')
-                    i = int(lista[1])
-                    j = int(lista[2])
-                    labels_pencils[i, j] = '{}'.format(var.x)
+            elif 'y' in var.varName and var.x > 0 and var.varName not in \
+                    con:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                Grafo.add_edge(i, j, cap=q)
+                Grafo[i][j]['cost'] = round(c[i][j], 2)
+                if '_0' in var.varName:
+                    for variable in m.getVars():
+                        if 'x_{}_{}'.format(i, j) in variable.varName:
+                            labels_pencils[i, j] = 'home'
+
+            if 'x' in var.varName and var.x > 0:
+                lista = var.varName.split('_')
+                i = int(lista[1])
+                j = int(lista[2])
+                labels_pencils[i, j] = '{}'.format(var.x)
 
     pos = nx.get_node_attributes(Grafo, 'pos')
     plt.figure("Grafo red")
