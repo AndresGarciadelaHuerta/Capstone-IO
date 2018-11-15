@@ -6,7 +6,7 @@ from math import sqrt
 
 class Simulador:
 
-    def __init__(self):
+    def __init__(self, lista_aux=[]):
         self.tiempo_anterior = 0
         self.tiempo_actual = 0
         self.contador_dias = 0
@@ -16,19 +16,36 @@ class Simulador:
         self.demanda_insatisfecha = 0
         self.demanda_satisfecha = 0
         self.prints = False
-        self.lista_aux = None
+        self.lista_aux = lista_aux
 
     @property
     def cola(self):
         self._cola.sort(key=lambda x: x[0])
         return self._cola
+
     @cola.setter
     def cola(self, lista):
         self._cola = lista
 
-    def definir_distribucion_manana(self):
+    def definir_distribucion_manana(self, ready=True):
+        diferencia = int((1653 - sum(self.lista_aux)) / 92)
+        resto = int((1653 - sum(self.lista_aux)) % 92)
         for estacion in self.estaciones.keys():
             self.estaciones[estacion].inventario = self.lista_aux[self.estaciones[estacion].num - 1]
+            if ready:
+                self.estaciones[estacion].inventario += diferencia
+            self.estaciones[estacion].inv_manana = self.lista_aux[self.estaciones[estacion].num - 1]
+            self.estaciones[estacion].demanda_insatisfecha_manana = 0
+            self.estaciones[estacion].demanda_insatisfecha_mediodia = 0
+            self.estaciones[estacion].demanda_insatisfecha_tarde = 0
+            self.estaciones[estacion].demanda_insatisfecha_noche = 0
+        if ready:
+            for i in range(resto):
+                self.estaciones['Estación {}'.format(i + 1)].inventario += 1
+
+
+    def reseteo(self):
+        for estacion in self.estaciones.keys():
             self.estaciones[estacion].inv_manana = self.lista_aux[self.estaciones[estacion].num - 1]
             self.estaciones[estacion].demanda_insatisfecha_manana = 0
             self.estaciones[estacion].demanda_insatisfecha_mediodia = 0
@@ -58,8 +75,14 @@ class Simulador:
                 Metodo que hace la simulacion.
                 Retorna None
         """
-        self.definir_distribucion_manana()
+        self.reseteo()
         self.llegadas_personas_manana()
+        vv = []
+        for i in self.estaciones.keys():
+            vv.append(self.estaciones[i].inventario)
+        print(vv)
+        print(self.lista_aux)
+        print('suma inventario', sum(vv))
 
         while self.contador_dias < 1:
 
@@ -168,4 +191,4 @@ if __name__ == '__main__':
     s.estaciones = estaciones
     s.prints = True
     s.run()
-    print(s.demanda_satisfecha/(s.demanda_insatisfecha + s.demanda_satisfecha))
+    print(s.demanda_satisfecha / (s.demanda_insatisfecha + s.demanda_satisfecha))

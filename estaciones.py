@@ -28,7 +28,7 @@ class Estacion:
         self.demanda_insatisfecha_noche = 0
 
     def probas(self, diccionarios):
-        #Diccionario con las llegadas esperadas de cada estacion
+        # Diccionario con las llegadas esperadas de cada estacion
         self.probs = {}
         self.probs['manana'] = {i.num: i.tasa_manana * 3 * i.diccionario_manana[self.number] for i in
                                 diccionarios.values()}
@@ -38,6 +38,13 @@ class Estacion:
                                diccionarios.values()}
         self.probs['noche'] = {i.num: i.tasa_noche * 3 * i.diccionario_noche[self.number] for i in
                                diccionarios.values()}
+
+        # flujo la resta entre llegadas y salidas
+        self.flujo_manana = sum(self.probs['manana'].values()) - 3 * self.tasa_manana
+        self.flujo_mediodia = sum(self.probs['mediodia'].values()) - 3 * self.tasa_mediodia
+        self.flujo_tarde = sum(self.probs['tarde'].values()) - 3 * self.tasa_tarde
+        self.flujo_noche = sum(self.probs['noche'].values()) - 3 * self.tasa_noche
+        self.flujo_total = self.flujo_manana + self.flujo_mediodia + self.flujo_tarde + self.flujo_noche
 
     def proxima_llegada_manana(self):
         self.proxima_llegada = expovariate(self.tasa_manana / 60)
