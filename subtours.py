@@ -1,6 +1,6 @@
 '''
 y _i,j = 1 si existe la ruta
-x = carga en cada wea
+x = carga en cada arco
 '''
 
 # cambiar valor de FO cuando entra a subtour!
@@ -67,11 +67,9 @@ def identifica(m):
                     # aca revisa si hay otros subtours
                     #print(par)
                     a = otro(par, sirven, x, y)
+
                     #print('a', a)
                     if a != False:
-                        print('x',x)
-                        print('y',y)
-                        print(sirvene)
                         for i in a:
                             con.append(i)
                     final = {}
@@ -83,7 +81,7 @@ def identifica(m):
 
                 else:
                     #print(orden)
-                    #print('No tiene')
+                    print('No tiene')
                     return False
 
             if ruta[0] == i:
