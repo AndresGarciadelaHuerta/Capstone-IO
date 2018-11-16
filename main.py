@@ -75,8 +75,9 @@ if __name__ == '__main__':
             lista_2.append(int(line[1]))
         lista_2 = lista_2[:-1]
 
-
-
+    # lista_2 = [17 for i in range(92)]
+    # for i in range(1653 % sum(lista_2)):
+    #     lista_2[lista_2.index(min(lista_2))] += 1
 
     with open('dist_inicial_minima.csv', 'w') as file:
         file.write('Estacion, Minimo\n')
@@ -96,10 +97,11 @@ if __name__ == '__main__':
     intervalo_bajo = 100
 
     # Esto es para buscar base factible
-    for i in range(1):
+    for repe in range(1):
         print(s.lista_aux)
         print(sum(s.lista_aux))
         objetivo = []
+        ganancia = []
         tiempo1 = time.time()
         s.prints = False
         lista_porcentajes = []
@@ -113,7 +115,7 @@ if __name__ == '__main__':
             i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana', 'mediodia', 'tarde', 'noche')} for i in
             range(1, 93)}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 25:
+        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 10:
             numero_simulaciones += 1
 
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
@@ -134,6 +136,7 @@ if __name__ == '__main__':
 
             # Corremos la simulación, los clusters y el ruteo
             s.run()
+            ganancia.append(s.ganancia)
             if 1:
                 clusters = opti_final(estaciones)
                 for grupo in clusters.values():
@@ -175,6 +178,7 @@ if __name__ == '__main__':
         promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
         varianza = round((float(numpy.std(lista_porcentajes).item()) ** 2), 4)
         var_objetivo = round((float(numpy.std(objetivo).item()) ** 2), 4)
+        var_ganancia = round((float(numpy.std(ganancia).item()) ** 2), 4)
 
         # Intervalo de confianza al 95%
 
@@ -184,6 +188,10 @@ if __name__ == '__main__':
         bajo_objetivo = sum(objetivo) / numero_simulaciones + studiante[0] * sqrt(var_objetivo) / sqrt(
             numero_simulaciones)
         alto_objetivo = sum(objetivo) / numero_simulaciones + studiante[1] * sqrt(var_objetivo) / sqrt(
+            numero_simulaciones)
+        bajo_ganancia = sum(ganancia) / numero_simulaciones + studiante[0] * sqrt(var_ganancia) / sqrt(
+            numero_simulaciones)
+        alto_ganancia = sum(ganancia) / numero_simulaciones + studiante[1] * sqrt(var_ganancia) / sqrt(
             numero_simulaciones)
 
         # reajuste por satisfaccion
@@ -215,6 +223,10 @@ if __name__ == '__main__':
         print('Intervalo de confianza al 95% de satisfacción: {} <= X <= {}'.format(intervalo_bajo, intervalo_alto))
         print('Funcion Objetivo: {}'.format(sum(objetivo) / numero_simulaciones))
         print('Intervalo al 95%: {} <= X <= {}'.format(bajo_objetivo, alto_objetivo))
+        print('Ingreso: {}'.format(sum(ganancia) / len(ganancia)))
+        print('Intervalo: {} <= {} <= {}'.format(bajo_ganancia / 1000000, sum(ganancia) / len(ganancia) / 1000000,
+                                                 alto_ganancia / 1000000))
+        print('Utilidad: {}'.format(sum(ganancia) / len(ganancia) / 1000000 - sum(objetivo) / numero_simulaciones))
         print('Tiempo en leer los datos: ' + str(round(tiempo2 - tiempo1, 2))
               + ' segundos.')
         print('Tiempo en simular todas las repeticiones: ' + str(round(

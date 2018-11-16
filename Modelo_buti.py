@@ -38,6 +38,7 @@ def ruteo(grupo, estaciones, prints=False):
                 estaciones['Estación {}'.format(estacion)].distancias_cuadrado[str(destino)])
         c[0][estacion] = 0
         c[estacion][0] = 0
+    c[0][0] = 0
     s[0] = 0
     n[0] = 0
 
@@ -111,6 +112,17 @@ def ruteo(grupo, estaciones, prints=False):
 
     for numero in grupo:
         estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
+
+    tiempo = 0
+    for inicio in y:
+        for final in y[inicio]:
+            tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
+
+    if tiempo > 12:
+        print('*' * 100)
+        print('Tiempo')
+        print('*' * 100)
+    print(tiempo)
 
     return m.objVal
 
