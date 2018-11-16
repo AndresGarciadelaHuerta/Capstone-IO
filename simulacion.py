@@ -17,6 +17,7 @@ class Simulador:
         self.demanda_satisfecha = 0
         self.prints = False
         self.lista_aux = lista_aux
+        self.ganancia = 0
 
     @property
     def cola(self):
@@ -51,6 +52,7 @@ class Simulador:
             self.estaciones[estacion].demanda_insatisfecha_mediodia = 0
             self.estaciones[estacion].demanda_insatisfecha_tarde = 0
             self.estaciones[estacion].demanda_insatisfecha_noche = 0
+            self.ganancia = 0
 
     def llegadas_personas_manana(self):
 
@@ -58,7 +60,7 @@ class Simulador:
             self.estaciones[estacion].proxima_llegada_manana()
             self.estaciones[estacion].proxima_llegada += int((8 * 60))
             self.cola.append((int(self.estaciones[estacion].proxima_llegada),
-                              "Inicio persona", estacion))
+                              "Inicio persona", estacion, self.tiempo_actual))
 
     def tiempo_viaje_persona(self, estacion1, estacion2):
         a = [float(self.estaciones[estacion1].x), float(self.estaciones[estacion1].y)]
@@ -68,7 +70,7 @@ class Simulador:
         distancia = float(sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2))
         tiempo_en_llegar = int((distancia / self.velocidad_bicicleta) * 60)
         return (self.tiempo_actual + tiempo_en_llegar, "Fin persona",
-                estacion2)
+                estacion2, self.tiempo_actual)
 
     def run(self):
         """
@@ -80,7 +82,7 @@ class Simulador:
         vv = []
         for i in self.estaciones.keys():
             vv.append(self.estaciones[i].inventario)
-        print(vv)
+        print('Inventario: {}'.format(vv))
         print(self.lista_aux)
         print('suma inventario', sum(vv))
 
@@ -173,7 +175,7 @@ class Simulador:
 
                 # Definimos nueva llegada
                 if self.tiempo_actual < 1200 and tiempo_nueva_llegada <= 1200:
-                    tupla = (tiempo_nueva_llegada, "Inicio persona", evento[2])
+                    tupla = (tiempo_nueva_llegada, "Inicio persona", evento[2], self.tiempo_actual)
                     self.cola.append(tupla)
 
 
@@ -181,6 +183,7 @@ class Simulador:
             elif evento[1] == "Fin persona":
                 if self.prints:
                     print(str(evento) + "Persona Finaliza")
+                self.ganancia += ((float(evento[0]) - evento[3]) // 20 + 1) * 400
                 self.estaciones[evento[2]].inventario += 1
                 self.cola.pop(0)
 
