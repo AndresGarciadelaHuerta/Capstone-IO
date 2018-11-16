@@ -29,14 +29,22 @@ def opti(estaciones, dic, params=False):
             n[estacion][j] = m.addVar(name='n_{}_{}'.format(estacion, j), vtype=GRB.INTEGER)
             s[estacion][j] = m.addVar(name='s_{}_{}'.format(estacion, j), vtype=GRB.INTEGER)
             m.update()
+
+    #Restriccion de neteo de demanda
     m.addConstrs(quicksum((n[i][j] - s[i][j]) for i in vars) == 0 for j in range(num_camiones))
     m.update()
+
+    #Restriccion de cero n y s si no se asigna
     m.addConstrs(M * vars[i][j] >= n[i][j] + s[i][j] for i in vars for j in range(num_camiones))
     m.update()
+
+    #Suma igual a la necesidad
     m.addConstrs(quicksum(n[i][j] for j in range(num_camiones)) == N[i] for i in vars)
     m.update()
-    m.addConstrs(quicksum(s[i][j] for j in range(num_camiones)) == S[i] for i in vars)
+    m.addConstrs(quicksum(s[i][j] for j in range(num_camiones)) <= S[i] for i in vars)
     m.update()
+
+    #Naturaleza de las variables
     m.addConstrs(s[i][j] >= 0 for i in vars for j in range(num_camiones))
     m.update()
     m.addConstrs(n[i][j] >= 0 for i in vars for j in range(num_camiones))
@@ -130,6 +138,7 @@ def opti_final(estaciones, prints=False):
                     bool = True
             if not bool:
                 print('Estación {}'.format(estacion.num))
+        pl.graficar(estaciones, final)
 
     return final
 

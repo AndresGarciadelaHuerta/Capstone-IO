@@ -78,12 +78,12 @@ def identifica(m):
                     for dict in con:
                         for cambio in dict.keys():
                             final[cambio] = dict[cambio]
-                    print(final)
 
                     return final
+
                 else:
                     #print(orden)
-                    print('No tiene')
+                    #print('No tiene')
                     return False
 
             if ruta[0] == i:
