@@ -80,7 +80,7 @@ class Simulador:
         vv = []
         for i in self.estaciones.keys():
             vv.append(self.estaciones[i].inventario)
-        print(vv)
+        print('Inventario: {}'.format(vv))
         print(self.lista_aux)
         print('suma inventario', sum(vv))
 

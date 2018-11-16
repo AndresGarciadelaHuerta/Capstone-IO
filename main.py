@@ -4,44 +4,41 @@ from Problema_integrado import *
 from scipy.stats import t
 import numpy
 
-lista = []
-contador_menores = 0
-
 
 def distribucion_inicial_estacion(estacion, estaciones):
     estacion.probas(estaciones)
-    pond = .8
+    pond = 1
     llegan_manana = sum(estacion.probs['manana'].values()) * pond
     llegan_mediodia = sum(estacion.probs['mediodia'].values()) * pond
     llegan_tarde = sum(estacion.probs['tarde'].values()) * pond
     llegan_noche = sum(estacion.probs['noche'].values()) * pond
-    salen_manana = 3 * estacion.tasa_manana * pond
-    salen_mediodia = 3 * estacion.tasa_mediodia * pond
-    salen_tarde = 3 * estacion.tasa_tarde * pond
-    salen_noche = 3 * estacion.tasa_noche * pond
-    inicial = 0
+    salen_manana = 3 * estacion.tasa_manana
+    salen_mediodia = 3 * estacion.tasa_mediodia
+    salen_tarde = 3 * estacion.tasa_tarde
+    salen_noche = 3 * estacion.tasa_noche
     manana = llegan_manana - salen_manana
     mediodia = llegan_mediodia - salen_mediodia
     tarde = llegan_tarde - salen_tarde
     noche = llegan_noche - salen_noche
+    suma = llegan_manana + llegan_mediodia + llegan_tarde + llegan_noche
     suma_ida = manana + mediodia
     suma_vuelta = tarde + noche
-    suma = manana + mediodia + tarde + noche
+    pond = .2
     if suma_ida > 0 and suma_vuelta > 0:
-        inicial = 11
+        inicial = salen_manana * pond - 1
     elif suma_ida > 0 and suma_vuelta < 0:
-        inicial = int(-suma_ida - suma_vuelta + 10)
+        inicial = salen_manana * pond - min(suma_ida + suma_vuelta, 0) + salen_tarde * pond
+        inicial += inicial * .15 + 4
     elif suma_ida < 0 and suma_vuelta > 0:
-        inicial = int(-suma_ida) + 11
+        inicial = salen_manana * pond - suma_ida + salen_tarde * pond
+        inicial += inicial * .15
     elif suma_ida < 0 and suma_vuelta < 0:
-        inicial = int(-suma_ida - suma_vuelta) + 15
-
-    return max(5, inicial)
+        inicial = int(salen_manana * pond + salen_manana + salen_mediodia + salen_tarde + salen_noche) - (
+                llegan_manana + llegan_mediodia + llegan_mediodia + llegan_noche) + salen_tarde * pond
+    return max(0, int(inicial * .81))
 
 
 if __name__ == '__main__':
-
-    intervalo_bajo = 0
 
     # Poblamos
     estaciones = read_json()
@@ -54,15 +51,31 @@ if __name__ == '__main__':
     ganan = [i.num for i in estaciones.values() if i.flujo_total > 0]
 
     # Distribucion que cumple con el 80% por si sola
-    lista_2 = [2, 20, 5, 10, 33, 31, 7, 14, 19, 7, 3, 5, 19, 5, 5, 33, 6, 6, 25, 20, 29, 4, 30, 4, 39, 5, 5, 25, 11, 16,
-               5, 36, 6, 2, 2, 5, 35, 20, 6, 27, 34, 16, 5, 3, 3, 5, 6, 6, 2, 18, 13, 5, 0, 18, 36, 16, 21, 2, 52, 10,
-               2, 36, 20, 35, 17, 5, 5, 2, 6, 3, 19, 15, 9, 47, 2, 6, 27, 57, 2, 15, 6, 3, 5, 9, 21, 10, 32, 21, 1, 24,
-               34, 60]
+    # lista_2 = [2, 20, 5, 10, 33, 31, 7, 14, 19, 7, 3, 5, 19, 5, 5, 33, 6, 6, 25, 20, 29, 4, 30, 4, 39, 5, 5, 25, 11, 16,
+    #            5, 36, 6, 2, 2, 5, 35, 20, 6, 27, 34, 16, 5, 3, 3, 5, 6, 6, 2, 18, 13, 5, 0, 18, 36, 16, 21, 2, 52, 10,
+    #            2, 36, 20, 35, 17, 5, 5, 2, 6, 3, 19, 15, 9, 47, 2, 6, 27, 57, 2, 15, 6, 3, 5, 9, 21, 10, 32, 21, 1, 24,
+    #            34, 60]
 
     # Distribucion que no cumple sola el 80 %
     # lista_2 = [0, 11, 0, 1, 24, 22, 0, 5, 10, 0, 0, 0, 10, 0, 0, 24, 0, 0, 16, 11, 20, 0, 21, 0, 30, 0, 0, 16, 2, 7, 0,
     #            27, 0, 0, 0, 0, 26, 11, 0, 18, 25, 7, 0, 0, 0, 0, 0, 0, 0, 9, 4, 0, 0, 9, 27, 7, 12, 0, 43, 1, 0, 27, 11,
     #            26, 8, 0, 0, 0, 0, 0, 10, 6, 0, 38, 0, 0, 18, 48, 0, 6, 0, 0, 0, 0, 12, 1, 23, 12, 0, 15, 25, 51]
+
+    # lista_2 = [distribucion_inicial_estacion(est, estaciones) for est in estaciones.values()]
+    # lista_2[0] -= 1
+    # print(sum(lista_2))
+    # for i in range(1653 % sum(lista_2)):
+    #     lista_2[lista_2.index(min(lista_2))] += 1
+
+    with open('verga.csv', 'r') as file:
+        lista_2 = []
+        file.readline()
+        for line in file:
+            line = line.split(',')
+            lista_2.append(int(line[1]))
+        lista_2 = lista_2[:-1]
+
+
 
 
     with open('dist_inicial_minima.csv', 'w') as file:
@@ -75,6 +88,7 @@ if __name__ == '__main__':
     s.definir_distribucion_manana()
 
     print(sum(lista_2))
+    print(lista_2)
     s.lista_aux = lista_2
 
     prom_anterior = 0
@@ -82,7 +96,7 @@ if __name__ == '__main__':
     intervalo_bajo = 100
 
     # Esto es para buscar base factible
-    for j in range(3):
+    for i in range(1):
         print(s.lista_aux)
         print(sum(s.lista_aux))
         objetivo = []
@@ -99,7 +113,7 @@ if __name__ == '__main__':
             i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana', 'mediodia', 'tarde', 'noche')} for i in
             range(1, 93)}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 5:
+        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 25:
             numero_simulaciones += 1
 
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
@@ -150,6 +164,13 @@ if __name__ == '__main__':
             intervalo_bajo = promedio_satisfaccion + studiante[0] * sqrt(varianza) / sqrt(numero_simulaciones)
             intervalo_alto = promedio_satisfaccion + studiante[1] * sqrt(varianza) / sqrt(numero_simulaciones)
 
+            # Print demandas por tiempo
+            for tiempo in ('manana', 'mediodia', 'tarde', 'noche'):
+                suma = 0
+                for estacion in estaciones.values():
+                    suma += demandas_por_estacion[estacion.num][tiempo]
+                print('{} -> {}'.format(tiempo, suma))
+
         tiempo3 = time.time()
         promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
         varianza = round((float(numpy.std(lista_porcentajes).item()) ** 2), 4)
@@ -172,10 +193,19 @@ if __name__ == '__main__':
                                                     demandas_por_estacion[x]['satisfechos'])))
 
         if True:
-            print('\nLas 5 estaciones con mayor cantidad de satisfaccion de demanda :')
-            print(demandas_estacion_ordenada[:5])
             print('\nLas 5 estaciones con mayor cantidad de insatisfaccion de demanda :')
-            print(demandas_estacion_ordenada[-5:])
+            for num in range(5):
+                a = demandas_estacion_ordenada[num]
+                print('{} -> {}'.format(a, demandas_por_estacion[a]['satisfechos'] / (
+                        demandas_por_estacion[a]['insatisfechos'] + demandas_por_estacion[a]['satisfechos'])))
+            print('\nLas 5 estaciones con mayor cantidad de satisfaccion de demanda :')
+            for x in range(5):
+                a = demandas_estacion_ordenada[-x - 1]
+                print('{} -> {}'.format(demandas_estacion_ordenada[-x - 1], demandas_por_estacion[a]['satisfechos'] / (
+                        demandas_por_estacion[a]['insatisfechos'] +
+                        demandas_por_estacion[a]['satisfechos'])))
+            for i in range(92):
+                print('{} -> {}'.format(i + 1, lista_2[i]))
 
         print('--------------------------------------------------------------')
         print('Porcentaje Promedio de Satisfaccion de la Demanda: ' + str(
@@ -189,7 +219,6 @@ if __name__ == '__main__':
               + ' segundos.')
         print('Tiempo en simular todas las repeticiones: ' + str(round(
             tiempo3 - tiempo2, 2)) + ' segundos.')
-
 
         with open('satisfaccion.csv', 'w') as file:
             file.write('Estacion, Satisfaccion\n')
@@ -206,5 +235,3 @@ if __name__ == '__main__':
                 'Costos:\n{} <= {} <= {}\n'.format(bajo_objetivo, sum(objetivo) / numero_simulaciones, alto_objetivo))
 
         break
-
-
