@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=False):
+def ruteo(grupo, estaciones, prints=True):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -106,9 +106,14 @@ def ruteo(grupo, estaciones, prints=False):
     a = identifica(m)
     if prints:
         if a != False:
-            graficar_ruteo(grupo, estaciones, m, c, a)
+            # con subtour
+            if len(a) > 4:
+                graficar_ruteo(grupo, estaciones, m, c, 0)
+                # sin subtour
+                graficar_ruteo(grupo, estaciones, m, c, a)
         else:
-            graficar_ruteo(grupo, estaciones, m, c, 0)
+            pass
+            #graficar_ruteo(grupo, estaciones, m, c, 0)
 
     for numero in grupo:
         estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
@@ -149,17 +154,22 @@ def ruteo(grupo, estaciones, prints=False):
 
     # print(m.objVal)
 
-
-def graficar_ruteo(grupo, estaciones, m, c, cond):
+def graficar_ruteo(grupo, estaciones, m, c, con):
     Grafo = nx.DiGraph()
+    x = []
+    #costotot = 0
+    for var in m.getVars():
+        if 'x' in var.varName:
+            x.append((var.varName, var.x))
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
     #Grafo.add_node(0, pos=(0.0, 0.0))
     labels_pencils = {}
     for var in m.getVars():
-        if cond == 0:
+        if con == 0:
             if 'y' in var.varName and var.x > 0 and '_0' not in var.varName:
+
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
@@ -176,32 +186,42 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
                 j = int(lista[2])
                 labels_pencils[i, j] = '{}'.format(var.x)
         else:
-            if var.varName in cond:
+            if var.varName in con and '_0' not in var.varName:
+                nombre = var.varName
                 print('editando')
-                if cond[var.varName] > 0:
+                if con[var.varName] > 0:
                     lista = var.varName.split('_')
                     i = int(lista[1])
                     j = int(lista[2])
                     Grafo.add_edge(i, j, cap=q)
+                    na = 'x' + nombre[1:]
                     Grafo[i][j]['cost'] = round(c[i][j], 2)
+                    for nam in x:
+                        if nam[0] == na:
+                            labels_pencils[i, j] = '{}'.format(nam[1])
+                    # costotot += round(c[i][j], 2)
 
             elif 'y' in var.varName and var.x > 0 and var.varName not in \
-                    cond:
+                    con and '_0' not in var.varName:
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
                 Grafo.add_edge(i, j, cap=q)
                 Grafo[i][j]['cost'] = round(c[i][j], 2)
-                if '0' in var.varName:
+                #costotot += round(c[i][j], 2)
+                if '_0' in var.varName:
                     for variable in m.getVars():
                         if 'x_{}_{}'.format(i, j) in variable.varName:
                             labels_pencils[i, j] = 'home'
 
+            # esta es lo que hay que cambiar para que imprima las cosas
             if 'x' in var.varName and var.x > 0:
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
                 labels_pencils[i, j] = '{}'.format(var.x)
+
+
 
     pos = nx.get_node_attributes(Grafo, 'pos')
     plt.figure("Grafo red")
@@ -209,4 +229,7 @@ def graficar_ruteo(grupo, estaciones, m, c, cond):
 
     nx.draw_networkx_edge_labels(Grafo, pos, edge_labels=labels_pencils)
     plt.show()
+
+    # el costotot es el resultado real del ruteo con los subtours arreglados...
+    #return costotot
     return m.objVal

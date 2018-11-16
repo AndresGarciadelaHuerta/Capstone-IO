@@ -117,7 +117,6 @@ if __name__ == '__main__':
 
         while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 10:
             numero_simulaciones += 1
-
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
             print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
             print(intervalo_bajo, intervalo_alto)
