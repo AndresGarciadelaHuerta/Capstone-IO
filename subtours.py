@@ -6,6 +6,7 @@ x = carga en cada arco
 # cambiar valor de FO cuando entra a subtour!
 
 
+# identifica si hay subtour
 def identifica(m):
     x = []
     y = []
@@ -91,6 +92,7 @@ def identifica(m):
                 orden.append(i)
 
 
+# elimina los arcos que no se usan y crea los otros que si se necesitan
 def arregla(orden, subtour, x, y):
     a = orden[-1][0]
     b = ''
@@ -145,7 +147,8 @@ def arregla(orden, subtour, x, y):
     ##print(v[0])##
     return v
 
-
+# funcion recursiva que en cuentra si hay mas subtours y los arregla hasta
+# que no quede ninguno
 def otro(orden, subtoura, x, y):
     subtour = subtoura
     orden1 = []

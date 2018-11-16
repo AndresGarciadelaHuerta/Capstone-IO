@@ -106,13 +106,14 @@ def ruteo(grupo, estaciones, prints=True):
     if prints:
         if a != False:
             # con subtour
-            if len(a) > 4:
+            if len(a) > 0:
                 graficar_ruteo(grupo, estaciones, m, c, 0)
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
         else:
+
+            graficar_ruteo(grupo, estaciones, m, c, 0)
             pass
-            #graficar_ruteo(grupo, estaciones, m, c, 0)
 
     for numero in grupo:
         estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
@@ -145,10 +146,14 @@ def ruteo(grupo, estaciones, prints=True):
 def graficar_ruteo(grupo, estaciones, m, c, con):
     Grafo = nx.DiGraph()
     x = []
-    #costotot = 0
+    y = []
+    costotot = 0
     for var in m.getVars():
         if 'x' in var.varName:
             x.append((var.varName, var.x))
+        elif 'y' in var.varName:
+            y.append((var.varName, var.x))
+
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
@@ -163,6 +168,7 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
                 j = int(lista[2])
                 Grafo.add_edge(i, j, cap=q)
                 Grafo[i][j]['cost'] = round(c[i][j], 2)
+                costotot += round(c[i][j], 2)
                 if '_0' in var.varName:
                     for variable in m.getVars():
                         if 'x_{}_{}'.format(i, j) in variable.varName:
@@ -187,7 +193,7 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
                     for nam in x:
                         if nam[0] == na:
                             labels_pencils[i, j] = '{}'.format(nam[1])
-                    # costotot += round(c[i][j], 2)
+                    costotot += round(c[i][j], 2)
 
             elif 'y' in var.varName and var.x > 0 and var.varName not in \
                     con and '_0' not in var.varName:
@@ -196,13 +202,13 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
                 j = int(lista[2])
                 Grafo.add_edge(i, j, cap=q)
                 Grafo[i][j]['cost'] = round(c[i][j], 2)
-                #costotot += round(c[i][j], 2)
+                costotot += round(c[i][j], 2)
                 if '_0' in var.varName:
                     for variable in m.getVars():
                         if 'x_{}_{}'.format(i, j) in variable.varName:
                             labels_pencils[i, j] = 'home'
 
-            # esta es lo que hay que cambiar para que imprima las cosas
+
             if 'x' in var.varName and var.x > 0:
                 lista = var.varName.split('_')
                 i = int(lista[1])
@@ -219,5 +225,7 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
     plt.show()
 
     # el costotot es el resultado real del ruteo con los subtours arreglados...
-    #return costotot
-    return m.objVal
+    #print('obj', m.objVal)
+    #print('tot',costotot)
+    #return m.objVal
+    return costotot
