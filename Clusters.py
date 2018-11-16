@@ -17,8 +17,8 @@ def opti(estaciones, dic, params=False):
     s = {}
     distancias = {}
     for estacion in dic:
-        N[estacion] = dic[estacion]['n']
-        S[estacion] = dic[estacion]['s']
+        N[estacion] = round(dic[estacion]['n'], 1)
+        S[estacion] = round(dic[estacion]['s'], 1)
         vars[estacion] = {}
         n[estacion] = {}
         s[estacion] = {}
@@ -54,9 +54,12 @@ def opti(estaciones, dic, params=False):
         vars[i][j] * vars[k][j] * estaciones['Estación {}'.format(i)].distancias_cuadrado[str(k)] for i in vars for k in vars
         for j in range(num_camiones)))
     m.update()
-    m.Params.MIPGap = .01
-    m.Params.timeLimit = 2
-    m.Params.OutputFlag = 0
+    if params:
+        m.Params.MIPGap = .1
+        m.Params.timeLimit = 60
+        m.Params.OutputFlag = 0
+    else:
+        m.Params.OutputFlag = 0
     m.optimize()
     resultados = {i: {} for i in range(num_camiones)}
     for z in m.getVars():
@@ -66,8 +69,8 @@ def opti(estaciones, dic, params=False):
             cam = int(lista[2])
             if est not in resultados[cam]:
                 resultados[cam][est] = {}
-            resultados[cam][est]['n'] = n[est][cam].X
-            resultados[cam][est]['s'] = s[est][cam].X
+            resultados[cam][est]['n'] = int(round(n[est][cam].X, 0))
+            resultados[cam][est]['s'] = int(round(s[est][cam].X, 0))
 
     for grupo in resultados:
         n = 0
@@ -75,6 +78,8 @@ def opti(estaciones, dic, params=False):
         for estacion in resultados[grupo]:
             n += resultados[grupo][estacion]['n']
             s += resultados[grupo][estacion]['s']
+        if (n - s) != 0:
+            print('VERGA DE PUTAS\n')
 
     return resultados
 
@@ -88,7 +93,7 @@ def opti_final(estaciones, prints=False):
         S[estacion.num] = -valor if valor < 0 else 0
 
     dic = {estacion.num: {'n': N[estacion.num], 's': S[estacion.num]} for estacion in estaciones.values()}
-    res = opti(estaciones, dic, False)
+    res = opti(estaciones, dic, True)
     cont = 0
     for i in res.values():
         res2 = opti(estaciones, i)
