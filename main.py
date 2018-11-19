@@ -42,9 +42,9 @@ def distribucion_inicial_estacion(estacion, estaciones):
 
 def heuristica_buti(lista_aux, demanda_ordenada):
     con = -1
-    while lista_aux[demanda_ordenada[con]] == 0:
+    while lista_aux[demanda_ordenada[con] - 1] == 0:
         con -= 1
-    lista_aux[demanda_ordenada[con]] -= 1
+    lista_aux[demanda_ordenada[con] - 1] -= 1
     lista_aux[demanda_ordenada[0] - 1] += 1
 
 
@@ -86,9 +86,17 @@ if __name__ == '__main__':
     #        lista_2.append(int(line[1]))
     #    lista_2 = lista_2[:-1]
 
-    lista_2 = [17 for i in range(92)]
-    for i in range(1653 % sum(lista_2)):
-        lista_2[lista_2.index(min(lista_2))] += 1
+    #lista_2 = [17 for i in range(92)]
+    #for i in range(1653 % sum(lista_2)):
+    #    lista_2[lista_2.index(min(lista_2))] += 1
+
+    with open('dist_uso.csv', 'r') as file:
+        lista_2 = []
+        file.readline()
+        for li in file:
+            lista_2.append(int(li.strip().split(',')[1]))
+        lista_2 = lista_2[:-1]
+
 
     with open('dist_inicial_minima.csv', 'w') as file:
         file.write('Estacion, Minimo\n')
@@ -225,7 +233,7 @@ if __name__ == '__main__':
                                                 'manana'])))
 
 
-        if True:
+        """if True:
             print('\nLas 5 estaciones con mayor cantidad de insatisfaccion de demanda :')
             for num in range(5):
                 a = demandas_estacion_ordenada[num]
@@ -238,7 +246,7 @@ if __name__ == '__main__':
                         demandas_por_estacion[a]['insatisfechos'] +
                         demandas_por_estacion[a]['satisfechos'])))
             for i in range(92):
-                print('{} -> {}'.format(i + 1, lista_2[i]))
+                print('{} -> {}'.format(i + 1, lista_2[i]))"""
 
         # cambiar demandas...
         heuristica_buti(s.lista_aux, demandas_estacion_ordenada1)
