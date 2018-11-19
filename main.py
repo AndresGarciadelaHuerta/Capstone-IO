@@ -38,6 +38,17 @@ def distribucion_inicial_estacion(estacion, estaciones):
     return max(0, int(inicial * .81))
 
 
+
+
+def heuristica_buti(lista_aux, demanda_ordenada):
+    con = -1
+    while lista_aux[demanda_ordenada[con]] == 0:
+        con -= 1
+    lista_aux[demanda_ordenada[con]] -= 1
+    lista_aux[demanda_ordenada[0] - 1] += 1
+
+
+
 if __name__ == '__main__':
 
     # Poblamos
@@ -67,17 +78,17 @@ if __name__ == '__main__':
     # for i in range(1653 % sum(lista_2)):
     #     lista_2[lista_2.index(min(lista_2))] += 1
 
-    with open('verga.csv', 'r') as file:
-        lista_2 = []
-        file.readline()
-        for line in file:
-            line = line.split(',')
-            lista_2.append(int(line[1]))
-        lista_2 = lista_2[:-1]
+    #with open('verga.csv', 'r') as file:
+    #    lista_2 = []
+    #    file.readline()
+    #    for line in file:
+    #        line = line.split(',')
+    #        lista_2.append(int(line[1]))
+    #    lista_2 = lista_2[:-1]
 
-    # lista_2 = [17 for i in range(92)]
-    # for i in range(1653 % sum(lista_2)):
-    #     lista_2[lista_2.index(min(lista_2))] += 1
+    lista_2 = [17 for i in range(92)]
+    for i in range(1653 % sum(lista_2)):
+        lista_2[lista_2.index(min(lista_2))] += 1
 
     with open('dist_inicial_minima.csv', 'w') as file:
         file.write('Estacion, Minimo\n')
@@ -88,8 +99,8 @@ if __name__ == '__main__':
     s.estaciones = estaciones
     s.definir_distribucion_manana()
 
-    print(sum(lista_2))
-    print(lista_2)
+    #print(sum(lista_2))
+    #print(lista_2)
     s.lista_aux = lista_2
 
     prom_anterior = 0
@@ -97,9 +108,10 @@ if __name__ == '__main__':
     intervalo_bajo = 100
 
     # Esto es para buscar base factible
-    for repe in range(1):
-        print(s.lista_aux)
-        print(sum(s.lista_aux))
+    for repe in range(5):
+    # while true
+        #print(s.lista_aux)
+        #print(sum(s.lista_aux))
         objetivo = []
         ganancia = []
         tiempo1 = time.time()
@@ -112,10 +124,12 @@ if __name__ == '__main__':
         tiempo2 = time.time()
 
         demandas_por_estacion = {
-            i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana', 'mediodia', 'tarde', 'noche')} for i in
+            i: {j: 0 for j in ('satisfechos', 'insatisfechos', 'manana',
+                               'mediodia', 'tarde', 'noche', 'satis_manana')}
+            for i in
             range(1, 93)}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 10:
+        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 7:
             numero_simulaciones += 1
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
             print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
@@ -136,10 +150,10 @@ if __name__ == '__main__':
             # Corremos la simulación, los clusters y el ruteo
             s.run()
             ganancia.append(s.ganancia)
-            if 1:
-                clusters = opti_final(estaciones)
-                for grupo in clusters.values():
-                    objetivo.append(ruteo(grupo, s.estaciones))
+            #if 1:
+            #    clusters = opti_final(estaciones)
+            #    for grupo in clusters.values():
+            #        objetivo.append(ruteo(grupo, s.estaciones))
 
             # Obtenemos las medidas de desempeño
 
@@ -156,6 +170,7 @@ if __name__ == '__main__':
                 demandas_por_estacion[estacion.num]['mediodia'] += estacion.demanda_insatisfecha_mediodia
                 demandas_por_estacion[estacion.num]['tarde'] += estacion.demanda_insatisfecha_tarde
                 demandas_por_estacion[estacion.num]['noche'] += estacion.demanda_insatisfecha_noche
+                demandas_por_estacion[estacion.num]['satis_manana'] += estacion.demanda_satisfecha_manana
 
             promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
             varianza = round((float(numpy.std(lista_porcentajes).item()) ** 2), 4)
@@ -171,7 +186,7 @@ if __name__ == '__main__':
                 suma = 0
                 for estacion in estaciones.values():
                     suma += demandas_por_estacion[estacion.num][tiempo]
-                print('{} -> {}'.format(tiempo, suma))
+                #print('{} -> {}'.format(tiempo, suma))
 
         tiempo3 = time.time()
         promedio_satisfaccion = sum(lista_porcentajes) / len(lista_porcentajes)
@@ -199,6 +214,17 @@ if __name__ == '__main__':
                                                     demandas_por_estacion[x]['insatisfechos'] +
                                                     demandas_por_estacion[x]['satisfechos'])))
 
+        # demanda estacion ordenada por estacion
+        demandas_estacion_ordenada1 = sorted(demandas_por_estacion,
+                                        key=lambda x: (
+                                        demandas_por_estacion[x][
+                                            'satis_manana'] / (
+                                            demandas_por_estacion[x][
+                                                'satis_manana'] +
+                                            demandas_por_estacion[x][
+                                                'manana'])))
+
+
         if True:
             print('\nLas 5 estaciones con mayor cantidad de insatisfaccion de demanda :')
             for num in range(5):
@@ -213,6 +239,9 @@ if __name__ == '__main__':
                         demandas_por_estacion[a]['satisfechos'])))
             for i in range(92):
                 print('{} -> {}'.format(i + 1, lista_2[i]))
+
+        # cambiar demandas...
+        heuristica_buti(s.lista_aux, demandas_estacion_ordenada1)
 
         print('--------------------------------------------------------------')
         print('Porcentaje Promedio de Satisfaccion de la Demanda: ' + str(
@@ -239,10 +268,11 @@ if __name__ == '__main__':
                     'insatisfechos'])
                 file.write('{},{}\n'.format(estacion.num, sat))
 
-        with open('resultados.txt', 'w') as file:
+        with open('resultados_chadwick.txt', 'a') as file:
             file.write('Satisfaccion de demanda:\n{} <= {} <= {}\n'.format(intervalo_bajo, promedio_satisfaccion,
                                                                            intervalo_alto))
             file.write(
                 'Costos:\n{} <= {} <= {}\n'.format(bajo_objetivo, sum(objetivo) / numero_simulaciones, alto_objetivo))
+            file.write(str(s.lista_aux))
 
-        break
+

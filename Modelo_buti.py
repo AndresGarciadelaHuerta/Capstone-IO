@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=True):
+def ruteo(grupo, estaciones, prints=False):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -124,11 +124,11 @@ def ruteo(grupo, estaciones, prints=True):
         for final in y[inicio]:
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
-    if tiempo > 12:
-        print('*' * 100)
-        print('Tiempo')
-        print('*' * 100)
-    print(tiempo)
+    #if tiempo > 12:
+    #    print('*' * 100)
+    #    print('Tiempo')
+    #    print('*' * 100)
+    #print(tiempo)
 
     return m.objVal
 
