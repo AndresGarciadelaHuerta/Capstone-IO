@@ -144,7 +144,11 @@ def arregla(orden, subtour, x, y):
     condiciones[c0] = 1.0
 
     v = (condiciones, par)
+    #print(condiciones)
     ##print(v[0])##
+    if cb == 'y__':
+        del condiciones[cb]
+        return (condiciones, par)
     return v
 
 # funcion recursiva que en cuentra si hay mas subtours y los arregla hasta
@@ -289,4 +293,12 @@ y =  [('y_0_0', 0.0), ('y_0_12', -0.0), ('y_12_0', -0.0), ('y_12_12', 0.0),
 
 '''
 
+"""
+text = []
+i = 0
+with open('tiempo_camiones799.txt', 'r') as file:
+    for line in file:
+        text.append(float(line.strip()))
 
+
+"""
