@@ -126,7 +126,6 @@ def ruteo(grupo, estaciones, prints=0):
     with open('tiempo_16.csv', 'a') as file:
         file.write('{}\n'.format(tiempo))
 
-
     if tiempo > 12:
         print('*' * 100)
         print('Tiempo')
