@@ -190,9 +190,11 @@ def otro(orden, subtoura, x, y):
                     for k in ce:
                         cond.append(k)
 
-                #else:
+                else:
                     # print(orden)
                     #print('No tiene mas de un subtour')
+                    pass
+
                 break
 
             elif ruta[0] == efe:
