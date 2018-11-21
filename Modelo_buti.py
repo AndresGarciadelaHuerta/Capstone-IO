@@ -6,10 +6,15 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from subtours import *
 
-
 q = 80
 
+<<<<<<< HEAD
 def ruteo(grupo, estaciones, prints=False):
+=======
+
+def ruteo(grupo, estaciones, prints=False):
+
+>>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -73,26 +78,25 @@ def ruteo(grupo, estaciones, prints=False):
     auxiliar = {0: ''}
     auxiliar.update(grupo)
 
-
-    #Cumplimiento de la demanda
+    # Cumplimiento de la demanda
     m.addConstrs(
         quicksum(x[origen][estacion] for origen in auxiliar) - quicksum(x[estacion][destino] for destino in auxiliar) ==
         n[estacion] - s[estacion] for estacion in auxiliar)
 
-    #Restriccion de carga del camion
+    # Restriccion de carga del camion
     m.addConstrs(x[i][j] <= q * y[i][j] for i in grupo for j in grupo)
 
-    #Rutas de HOME
+    # Rutas de HOME
     m.addConstrs(x[0][i] == 0 for i in grupo)
     m.addConstrs(x[i][0] == 0 for i in grupo)
 
-    #Viajar a si mismo es cero
+    # Viajar a si mismo es cero
     m.addConstrs(y[nodo][nodo] == 0 for nodo in auxiliar)
 
-    #Si entra a un nodo, entonces sale
+    # Si entra a un nodo, entonces sale
     m.addConstrs(quicksum(y[i][j] for i in auxiliar) - quicksum(y[j][k] for k in auxiliar) == 0 for j in auxiliar)
 
-    #Restricciones de flujo una sola vez a HOME
+    # Restricciones de flujo una sola vez a HOME
     m.addConstr(quicksum(y[0][nodo] for nodo in grupo) == 1)
     m.addConstr(quicksum(y[nodo][0] for nodo in grupo) == 1)
 
@@ -103,6 +107,20 @@ def ruteo(grupo, estaciones, prints=False):
     # resolver
     m.Params.OutputFlag = 0
     m.optimize()
+
+    # a = identifica(m)
+    # if prints:
+    #     if a != False:
+    #         # con subtour
+    #         if len(a) > 0:
+    #             graficar_ruteo(grupo, estaciones, m, c, 0)
+    #             # sin subtour
+    #             graficar_ruteo(grupo, estaciones, m, c, a)
+    #     else:
+    #
+    #         graficar_ruteo(grupo, estaciones, m, c, 0)
+    #         pass
+
     a = identifica(m)
     if prints:
         if a != False:
@@ -112,18 +130,19 @@ def ruteo(grupo, estaciones, prints=False):
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
         else:
-
             graficar_ruteo(grupo, estaciones, m, c, 0)
-            pass
+
 
     for numero in grupo:
-        estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
+        estaciones['Estación {}'.format(numero)].inventario += round(grupo[numero]['n'], 0) - round(grupo[numero]['s'],
+                                                                                                    0)
 
     tiempo = 0
     for inicio in y:
         for final in y[inicio]:
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
+<<<<<<< HEAD
     #with open('tiempo_camiones799.txt', 'a') as file:
     #    file.write(str(tiempo) + '\n')
 
@@ -132,9 +151,26 @@ def ruteo(grupo, estaciones, prints=False):
     #    print('Tiempo')
     #    print('*' * 100)
     #print(tiempo)
+=======
+
+    #if tiempo > 12:
+        #print('*' * 100)
+        #print('Tiempo')
+        #print('*' * 100)
+    #print(tiempo)
+
+    print('Tiempo camiones: {}'.format(tiempo))
+    with open('tiempo_16.csv', 'a') as file:
+        file.write('{}\n'.format(tiempo))
+
+    if tiempo > 12:
+        print('*' * 100)
+        print('Tiempo')
+        print('*' * 100)
+>>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
+
 
     return m.objVal
-
 
     # for var in m.getVars():
     #   if 'x' in var.varName:
@@ -143,7 +179,6 @@ def ruteo(grupo, estaciones, prints=False):
     # for var in m.getVars():
     #   if 'y' in var.varName:
     #      print('Estación {}-> {}'.format(var.varName, var.x))
-
 
     # print(m.objVal)
 
@@ -157,6 +192,7 @@ def ruteo(grupo, estaciones, prints=False):
     #   print(v.varName, v.x)
 
     # print(m.objVal)
+
 
 def graficar_ruteo(grupo, estaciones, m, c, con):
     Grafo = nx.DiGraph()
@@ -172,8 +208,12 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
+<<<<<<< HEAD
     # home
     #Grafo.add_node(0, pos=(0.0, 0.0))
+=======
+    # Grafo.add_node(0, pos=(0.0, 0.0))
+>>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
     labels_pencils = {}
     for var in m.getVars():
         if con == 0:
@@ -190,6 +230,11 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
                     for variable in m.getVars():
                         if 'x_{}_{}'.format(i, j) in variable.varName:
                             labels_pencils[i, j] = 'home'
+                # else:
+                #     name = var.varName.split('_')
+                #     inicio = int(name[1])
+                #     final = int(name[2])
+                #     labels_pencils[inicio, final] = round(c[inicio][final], 2)
 
             if 'x' in var.varName and var.x > 0:
                 lista = var.varName.split('_')
@@ -225,14 +270,11 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
                         if 'x_{}_{}'.format(i, j) in variable.varName:
                             labels_pencils[i, j] = 'home'
 
-
             if 'x' in var.varName and var.x > 0:
                 lista = var.varName.split('_')
                 i = int(lista[1])
                 j = int(lista[2])
                 labels_pencils[i, j] = '{}'.format(var.x)
-
-
 
     pos = nx.get_node_attributes(Grafo, 'pos')
     plt.figure("Grafo red")
@@ -242,7 +284,7 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
     plt.show()
 
     # el costotot es el resultado real del ruteo con los subtours arreglados...
-    #print('obj', m.objVal)
-    #print('tot',costotot)
-    #return m.objVal
+    # print('obj', m.objVal)
+    # print('tot',costotot)
+    # return m.objVal
     return costotot

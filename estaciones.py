@@ -27,6 +27,10 @@ class Estacion:
         self.demanda_insatisfecha_tarde = 0
         self.demanda_insatisfecha_noche = 0
         self.demanda_satisfecha_manana = 0
+        self.manana = 0
+        self.mediodia = 0
+        self.tarde = 0
+        self.noche = 0
 
     def probas(self, diccionarios):
         # Diccionario con las llegadas esperadas de cada estacion

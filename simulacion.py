@@ -44,7 +44,6 @@ class Simulador:
             for i in range(resto):
                 self.estaciones['Estación {}'.format(i + 1)].inventario += 1
 
-
     def reseteo(self):
         for estacion in self.estaciones.keys():
             self.estaciones[estacion].inv_manana = self.lista_aux[self.estaciones[estacion].num - 1]
@@ -54,6 +53,10 @@ class Simulador:
             self.estaciones[estacion].demanda_insatisfecha_tarde = 0
             self.estaciones[estacion].demanda_insatisfecha_noche = 0
             self.estaciones[estacion].demanda_satisfecha_manana = 0
+            self.estaciones[estacion].manana = 0
+            self.estaciones[estacion].mediodia = 0
+            self.estaciones[estacion].tarde = 0
+            self.estaciones[estacion].noche = 0
             self.ganancia = 0
 
 
@@ -89,6 +92,12 @@ class Simulador:
         #print('Inventario: {}'.format(vv))
         print(self.lista_aux)
         #print('suma inventario', sum(vv))
+
+        for est in self.estaciones.values():
+            vv.append(est.inventario)
+        print('inventario: {}'.format(vv))
+        print(self.lista_aux)
+
 
         while self.contador_dias < 1:
 
@@ -144,6 +153,7 @@ class Simulador:
                         tiempo_nueva_llegada = int(self.tiempo_actual + \
                                                    self.estaciones[
                                                        evento[2]].proxima_llegada)
+                        self.estaciones[evento[2]].manana -= 1
                     elif self.tiempo_actual < (14 * 60):
                         estacion_llegada = numpy.random.choice(
                             list(self.estaciones.keys()), 1, p=list(self.estaciones[
@@ -152,6 +162,7 @@ class Simulador:
                         tiempo_nueva_llegada = int(self.tiempo_actual + \
                                                    self.estaciones[
                                                        evento[2]].proxima_llegada)
+                        self.estaciones[evento[2]].mediodia -= 1
                     elif self.tiempo_actual < (17 * 60):
                         estacion_llegada = numpy.random.choice(
                             list(self.estaciones.keys()), 1, p=list(self.estaciones[
@@ -160,6 +171,7 @@ class Simulador:
                         tiempo_nueva_llegada = int(self.tiempo_actual + \
                                                    self.estaciones[
                                                        evento[2]].proxima_llegada)
+                        self.estaciones[evento[2]].tarde -= 1
                     # Ahora el caso en que self.tiempo_actual < (20 * 60)
                     ##### CAMBIAR DE TARDE A NOCHE CUANDO ESTE LISTO
                     else:
@@ -170,6 +182,7 @@ class Simulador:
                         tiempo_nueva_llegada = int(self.tiempo_actual + \
                                                    self.estaciones[
                                                        evento[2]].proxima_llegada)
+                        self.estaciones[evento[2]].noche -= 1
 
                     self.estaciones[evento[2]].inventario -= 1
                     self.estaciones[evento[2]].demanda_satisfecha += 1
@@ -193,6 +206,14 @@ class Simulador:
                 self.ganancia += ((float(evento[0]) - evento[3]) // 20 + 1) * 400
                 self.estaciones[evento[2]].inventario += 1
                 self.cola.pop(0)
+                if self.tiempo_actual < (11 * 60):
+                    self.estaciones[evento[2]].manana += 1
+                elif self.tiempo_actual < (14 * 60):
+                    self.estaciones[evento[2]].mediodia += 1
+                elif self.tiempo_actual < (17 * 60):
+                    self.estaciones[evento[2]].tarde += 1
+                else:
+                    self.estaciones[evento[2]].noche += 1
 
 
 if __name__ == '__main__':
