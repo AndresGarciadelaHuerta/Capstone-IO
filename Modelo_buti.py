@@ -8,13 +8,10 @@ from subtours import *
 
 q = 80
 
-<<<<<<< HEAD
-def ruteo(grupo, estaciones, prints=False):
-=======
+
 
 def ruteo(grupo, estaciones, prints=False):
 
->>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -142,7 +139,6 @@ def ruteo(grupo, estaciones, prints=False):
         for final in y[inicio]:
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
-<<<<<<< HEAD
     #with open('tiempo_camiones799.txt', 'a') as file:
     #    file.write(str(tiempo) + '\n')
 
@@ -151,7 +147,6 @@ def ruteo(grupo, estaciones, prints=False):
     #    print('Tiempo')
     #    print('*' * 100)
     #print(tiempo)
-=======
 
     #if tiempo > 12:
         #print('*' * 100)
@@ -167,7 +162,6 @@ def ruteo(grupo, estaciones, prints=False):
         print('*' * 100)
         print('Tiempo')
         print('*' * 100)
->>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
 
 
     return m.objVal
@@ -208,12 +202,8 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
-<<<<<<< HEAD
     # home
     #Grafo.add_node(0, pos=(0.0, 0.0))
-=======
-    # Grafo.add_node(0, pos=(0.0, 0.0))
->>>>>>> 09fdcc76022527247779355fba7fecebb98e0b5e
     labels_pencils = {}
     for var in m.getVars():
         if con == 0:
