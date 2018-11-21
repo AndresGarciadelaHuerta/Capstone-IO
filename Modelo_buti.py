@@ -123,7 +123,7 @@ def ruteo(grupo, estaciones, prints=0):
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
     print('Tiempo camiones: {}'.format(tiempo))
-    with open('tiempo_verga.csv', 'a') as file:
+    with open('tiempo_16.csv', 'a') as file:
         file.write('{}\n'.format(tiempo))
 
 
