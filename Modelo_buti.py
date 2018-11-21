@@ -110,11 +110,12 @@ def ruteo(grupo, estaciones, prints=True):
         if a != False:
             # con subtour
             if len(a) > 0:
-                graficar_ruteo(grupo, estaciones, m, c, 0)
+                # este grafica con el subtour
+                #graficar_ruteo(grupo, estaciones, m, c, 0)
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
         else:
-            #graficar_ruteo(grupo, estaciones, m, c, 0)
+            graficar_ruteo(grupo, estaciones, m, c, 0)
             pass
 
 
