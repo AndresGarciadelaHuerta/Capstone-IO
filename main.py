@@ -39,6 +39,7 @@ def distribucion_inicial_estacion(estacion, estaciones):
 
 
 if __name__ == '__main__':
+    numero_de_replicas = 50
 
     # Poblamos
     tiempo1 = time.time()
@@ -122,10 +123,9 @@ if __name__ == '__main__':
 
         distribuciones_finales = {i: [0 for j in range(92)] for i in ('manana', 'mediodia', 'tarde', 'noche', 'total')}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 50:
+        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < numero_de_replicas:
             numero_simulaciones += 1
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
-            print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
             print(intervalo_bajo, intervalo_alto)
             if len(objetivo) > 1:
                 print(sum(objetivo[-8:]))

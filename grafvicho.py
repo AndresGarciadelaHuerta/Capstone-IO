@@ -10,7 +10,10 @@ def graficar(estaciones, resultados):
         for estacion in resultados[grupo]:
             x.append(int(estaciones['Estación {}'.format(estacion)].x))
             y.append(int(estaciones['Estación {}'.format(estacion)].y))
-            colores.append(posibles[grupo])
+            if grupo < 8:
+                colores.append(posibles[grupo])
+            else:
+                colores.append(posibles[grupo - 8])
 
     plot.scatter(x, y, c=colores)
     plot.xlabel("Posicion en x")

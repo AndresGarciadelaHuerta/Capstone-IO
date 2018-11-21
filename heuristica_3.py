@@ -227,6 +227,12 @@ if __name__ == '__main__':
         print('Tiempo en simular todas las repeticiones: ' + str(round(
             tiempo3 - tiempo2, 2)) + ' segundos.')
 
+        with open('heuristica_3.csv', 'a') as file:
+            pp = sum(objetivo) / numero_simulaciones
+            file.write(
+                '{},{},{},{},{},{},{}\n'.format(intervalo_bajo, promedio_satisfaccion, intervalo_alto, bajo_objetivo, pp,
+                                              alto_objetivo, lista_2))
+
         with open('satisfaccion.csv', 'w') as file:
             file.write('Estacion, Satisfaccion\n')
             for estacion in estaciones.values():

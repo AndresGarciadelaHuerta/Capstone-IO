@@ -111,9 +111,7 @@ def ruteo(grupo, estaciones, prints=0):
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
         else:
-
             graficar_ruteo(grupo, estaciones, m, c, 0)
-            pass
 
     for numero in grupo:
         estaciones['Estación {}'.format(numero)].inventario += round(grupo[numero]['n'], 0) - round(grupo[numero]['s'],
