@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=True):
+def ruteo(grupo, estaciones, prints=False):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -107,7 +107,7 @@ def ruteo(grupo, estaciones, prints=True):
     if prints:
         if a != False:
             # con subtour
-            if len(a) > 0:
+            if len(a) > 4:
                 graficar_ruteo(grupo, estaciones, m, c, 0)
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
@@ -124,11 +124,14 @@ def ruteo(grupo, estaciones, prints=True):
         for final in y[inicio]:
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
-    if tiempo > 12:
-        print('*' * 100)
-        print('Tiempo')
-        print('*' * 100)
-    print(tiempo)
+    #with open('tiempo_camiones799.txt', 'a') as file:
+    #    file.write(str(tiempo) + '\n')
+
+    #if tiempo > 12:
+    #    print('*' * 100)
+    #    print('Tiempo')
+    #    print('*' * 100)
+    #print(tiempo)
 
     return m.objVal
 
@@ -169,11 +172,13 @@ def graficar_ruteo(grupo, estaciones, m, c, con):
     for estacion in grupo:
         pos = (float(estaciones['Estación {}'.format(estacion)].x), float(estaciones['Estación {}'.format(estacion)].y))
         Grafo.add_node(estacion, pos=pos)
+    # home
     #Grafo.add_node(0, pos=(0.0, 0.0))
     labels_pencils = {}
     for var in m.getVars():
         if con == 0:
             if 'y' in var.varName and var.x > 0 and '_0' not in var.varName:
+            #if 'y' in var.varName and var.x > 0:
 
                 lista = var.varName.split('_')
                 i = int(lista[1])
