@@ -262,7 +262,7 @@ if __name__ == '__main__':
                     'insatisfechos'])
                 file.write('{},{}\n'.format(estacion.num, sat))
 
-        with open('resultados_1.txt', 'a') as file:
+        with open('resultados_heuristica_2.txt', 'a') as file:
             file.write('Satisfaccion de demanda:\n{} <= {} <= {}\n'.format(intervalo_bajo, promedio_satisfaccion,
                                                                            intervalo_alto))
             file.write('Distribución Inicial:' + str(s.lista_aux) + '\n')
