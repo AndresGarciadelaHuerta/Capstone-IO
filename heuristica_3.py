@@ -48,19 +48,12 @@ if __name__ == '__main__':
     for est in estaciones.values():
         est.probas(estaciones)
 
+    # Hacemos listas con las estaciones que reciben y pierden bicis
+    pierden = [i.num for i in estaciones.values() if i.flujo_total < 0]
+    ganan = [i.num for i in estaciones.values() if i.flujo_total > 0]
+
     # Distribución uniforme
     # lista_2 = [17 if i < 3 else 18 for i in range(92)]
-
-    # Distribucion que cumple con el 80% por si sola
-    # lista_2 = [2, 20, 5, 10, 33, 31, 7, 14, 19, 7, 3, 5, 19, 5, 5, 33, 6, 6, 25, 20, 29, 4, 30, 4, 39, 5, 5, 25, 11, 16,
-    #            5, 36, 6, 2, 2, 5, 35, 20, 6, 27, 34, 16, 5, 3, 3, 5, 6, 6, 2, 18, 13, 5, 0, 18, 36, 16, 21, 2, 52, 10,
-    #            2, 36, 20, 35, 17, 5, 5, 2, 6, 3, 19, 15, 9, 47, 2, 6, 27, 57, 2, 15, 6, 3, 5, 9, 21, 10, 32, 21, 1, 24,
-    #            34, 60]
-
-    # Distribucion que no cumple sola el 80 %
-    lista_2 = [0, 11, 0, 1, 24, 22, 0, 5, 10, 0, 0, 0, 10, 0, 0, 24, 0, 0, 16, 11, 20, 0, 21, 0, 30, 0, 0, 16, 2, 7, 0,
-               27, 0, 0, 0, 0, 26, 11, 0, 18, 25, 7, 0, 0, 0, 0, 0, 0, 0, 9, 4, 0, 0, 9, 27, 7, 12, 0, 43, 1, 0, 27, 11,
-               26, 8, 0, 0, 0, 0, 0, 10, 6, 0, 38, 0, 0, 18, 48, 0, 6, 0, 0, 0, 0, 12, 1, 23, 12, 0, 15, 25, 58]
 
     # Distribucion definida por la funcion arriba
     # lista_2 = [distribucion_inicial_estacion(est, estaciones) for est in estaciones.values()]
@@ -69,32 +62,21 @@ if __name__ == '__main__':
     # for i in range(1653 % sum(lista_2)):
     #     lista_2[lista_2.index(min(lista_2))] += 1
 
-    # with open('new-table.csv', 'r') as file:
-    #     lista_2 = []
-    #     file.readline()
-    #     for line in file:
-    #         line = line.split(',')
-    #         lista_2.append(int(line[1]))
-    #     lista_2 = lista_2[:-1]
-    #
-    # with open('dist_inicial_minima.csv', 'w') as file:
-    #     file.write('Estacion, Minimo\n')
-    #     for est in estaciones.values():
-    #         file.write('{},{}\n'.format(est.num, lista_2[est.num - 1]))
-
+    # Distribucion inicial
     # lista_2 = [6, 23, 3, 17, 33, 22, 14, 22, 17, 14, 61, 13, 27, 1, 12, 26, 11, 3, 25, 20, 25, 8, 26, 9, 26, 12, 7, 25,
     #            18, 14, 15, 25, 10, 5, 8, 10, 25, 17, 6, 24, 26, 23, 5, 18, 13, 5, 10, 14, 12, 17, 11, 24, 28, 25, 25,
     #            23, 21, 13, 23, 18, 12, 25, 21, 23, 15, 6, 10, 12, 8, 13, 18, 15, 16, 29, 12, 6, 27, 26, 11, 21, 45, 53,
     #            3, 16, 21, 10, 28, 22, 27, 24, 25, 14]
 
-    # lista_2 = []
-    # with open('dist_b_p.csv', 'r') as file:
-    #     file.readline()
-    #     file.readline()
-    #     for linea in file:
-    #         line = linea.split(',')
-    #         lista_2.append(int(line[2]))
-    #         file.readline()
+    # Distribución b prima
+    lista_2 = []
+    with open('dist_b_p.csv', 'r') as file:
+        file.readline()
+        file.readline()
+        for linea in file:
+            line = linea.split(',')
+            lista_2.append(int(line[2]))
+            file.readline()
 
     s = simulacion.Simulador(lista_2)
     s.estaciones = estaciones
@@ -106,7 +88,8 @@ if __name__ == '__main__':
 
     intervalo_bajo = 100
 
-    if True:
+    # Esto es para buscar base factible
+    while intervalo_bajo > 80:
         objetivo = []
         ganancia = []
         s.prints = False
@@ -122,7 +105,7 @@ if __name__ == '__main__':
 
         distribuciones_finales = {i: [0 for j in range(92)] for i in ('manana', 'mediodia', 'tarde', 'noche', 'total')}
 
-        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 50:
+        while (intervalo_alto - intervalo_bajo) > 2 or numero_simulaciones < 7:
             numero_simulaciones += 1
             print('\nCorriendo repetición {}.'.format(str(numero_simulaciones)))
             print(intervalo_alto - intervalo_bajo, numero_simulaciones, '\n')
@@ -251,3 +234,30 @@ if __name__ == '__main__':
                         demandas_por_estacion[estacion.num]['satisfechos'] + demandas_por_estacion[estacion.num][
                     'insatisfechos'])
                 file.write('{},{}\n'.format(estacion.num, sat))
+        #
+        # with open('resultados.txt', 'w') as file:
+        #     file.write('Satisfaccion de demanda:\n{} <= {} <= {}\n'.format(intervalo_bajo, promedio_satisfaccion,
+        #                                                                    intervalo_alto))
+        #     file.write(
+        #         'Costos:\n{} <= {} <= {}\n'.format(bajo_objetivo, sum(objetivo) / numero_simulaciones, alto_objetivo))
+
+        # Reasignamos bicis de acuerdo a su diferencia de inventarios
+        lista = sorted(distribuciones_finales['total'])
+        cont = 0
+        while s.lista_aux[distribuciones_finales['total'].index(lista[cont])] == 0:
+            cont += 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[cont])] -= 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[-1])] += 1
+        print(distribuciones_finales['total'].index(lista[cont]), distribuciones_finales['total'].index(lista[-1]))
+        cont += 1
+        while s.lista_aux[distribuciones_finales['total'].index(lista[cont])] == 0:
+            cont += 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[cont])] -= 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[-2])] += 1
+        print(distribuciones_finales['total'].index(lista[cont]), distribuciones_finales['total'].index(lista[-2]))
+        cont += 1
+        while s.lista_aux[distribuciones_finales['total'].index(lista[cont])] == 0:
+            cont += 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[cont])] -= 1
+        s.lista_aux[distribuciones_finales['total'].index(lista[-3])] += 1
+        print(distribuciones_finales['total'].index(lista[cont]), distribuciones_finales['total'].index(lista[-3]))
