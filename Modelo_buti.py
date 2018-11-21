@@ -9,7 +9,7 @@ from subtours import *
 
 q = 80
 
-def ruteo(grupo, estaciones, prints=True):
+def ruteo(grupo, estaciones, prints=False):
     lista_aux = []
     for estacion in grupo:
         grupo[estacion]['n'] = int(round(grupo[estacion]['n'], 1))
@@ -103,18 +103,18 @@ def ruteo(grupo, estaciones, prints=True):
     # resolver
     m.Params.OutputFlag = 0
     m.optimize()
-    a = identifica(m)
-    if prints:
-        if a != False:
-            # con subtour
-            if len(a) > 0:
-                graficar_ruteo(grupo, estaciones, m, c, 0)
-                # sin subtour
-                graficar_ruteo(grupo, estaciones, m, c, a)
-        else:
-
-            graficar_ruteo(grupo, estaciones, m, c, 0)
-            pass
+    # a = identifica(m)
+    # if prints:
+    #     if a != False:
+    #         # con subtour
+    #         if len(a) > 0:
+    #             graficar_ruteo(grupo, estaciones, m, c, 0)
+    #             # sin subtour
+    #             graficar_ruteo(grupo, estaciones, m, c, a)
+    #     else:
+    #
+    #         graficar_ruteo(grupo, estaciones, m, c, 0)
+    #         pass
 
     for numero in grupo:
         estaciones['Estación {}'.format(numero)].inventario += grupo[numero]['n'] - grupo[numero]['s']
@@ -124,11 +124,11 @@ def ruteo(grupo, estaciones, prints=True):
         for final in y[inicio]:
             tiempo += c[inicio][final] / .013 / 60 * y[inicio][final].x
 
-    if tiempo > 12:
-        print('*' * 100)
-        print('Tiempo')
-        print('*' * 100)
-    print(tiempo)
+    #if tiempo > 12:
+        #print('*' * 100)
+        #print('Tiempo')
+        #print('*' * 100)
+    #print(tiempo)
 
     return m.objVal
 

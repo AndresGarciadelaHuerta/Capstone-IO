@@ -48,6 +48,7 @@ class Simulador:
     def reseteo(self):
         for estacion in self.estaciones.keys():
             self.estaciones[estacion].inv_manana = self.lista_aux[self.estaciones[estacion].num - 1]
+            self.estaciones[estacion].inventario = self.lista_aux[self.estaciones[estacion].num - 1]
             self.estaciones[estacion].demanda_insatisfecha_manana = 0
             self.estaciones[estacion].demanda_insatisfecha_mediodia = 0
             self.estaciones[estacion].demanda_insatisfecha_tarde = 0
@@ -82,9 +83,9 @@ class Simulador:
         vv = []
         for i in self.estaciones.keys():
             vv.append(self.estaciones[i].inventario)
-        print('Inventario: {}'.format(vv))
+        #print('Inventario: {}'.format(vv))
         print(self.lista_aux)
-        print('suma inventario', sum(vv))
+        #print('suma inventario', sum(vv))
 
         while self.contador_dias < 1:
 

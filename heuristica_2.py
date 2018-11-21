@@ -38,6 +38,11 @@ def distribucion_inicial_estacion(estacion, estaciones):
     return max(0, int(inicial * .81))
 
 
+def heuristica_2(lista_aux, demandas_ordenadas, cont=-1):
+    while lista_aux[demandas_ordenadas[cont]] == 0: cont -= 1
+    lista_aux[demandas_ordenadas[cont]] -= 1
+    lista_aux[demandas_ordenadas[0] - 1] += 1
+
 
 if __name__ == '__main__':
 
@@ -82,10 +87,17 @@ if __name__ == '__main__':
     # for i in range(1653 % sum(lista_2)):
     #     lista_2[lista_2.index(min(lista_2))] += 1
 
-    ## Usa la distribucion inicial uniforme
-    lista_2 = [17 for i in range(92)]
-    for i in range(1653 % sum(lista_2)):
-        lista_2[lista_2.index(min(lista_2))] += 1
+    with open('dist_inicial_heuristica_2.csv', 'r') as file:
+        lista_2 = []
+        file.readline()
+        for line in file:
+            line = line.split(',')
+            lista_2.append(int(line[1]))
+        lista_2 = lista_2[:-1]
+
+    # lista_2 = [17 for i in range(92)]
+    # for i in range(1653 % sum(lista_2)):
+    #     lista_2[lista_2.index(min(lista_2))] += 1
 
     with open('dist_inicial_minima.csv', 'w') as file:
         file.write('Estacion, Minimo\n')
@@ -222,7 +234,8 @@ if __name__ == '__main__':
             for i in range(92):
                 print('{} -> {}'.format(i + 1, lista_2[i]))
 
-
+        ### Corremos la heuristica 2 para obtener nueva distribución inicial ###
+        heuristica_2(s.lista_aux, demandas_estacion_ordenada)
 
         print('--------------------------------------------------------------')
         print('Porcentaje Promedio de Satisfaccion de la Demanda: ' + str(

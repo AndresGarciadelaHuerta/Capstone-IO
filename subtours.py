@@ -59,7 +59,7 @@ def identifica(m):
                 par.append(ruta)
                 sirven.remove(ruta)
                 if len(sirven) != 0:
-                    print('Si tiene')
+                    #print('Si tiene')
                     ##print(sirven)##
                     #r = arregla(par, sirven, x, y)
                     #con.append(r[0])
@@ -82,7 +82,7 @@ def identifica(m):
 
                 else:
                     #print(orden)
-                    print('No tiene')
+                    #print('No tiene')
                     return False
 
             if ruta[0] == i:
@@ -144,7 +144,9 @@ def arregla(orden, subtour, x, y):
     condiciones[c0] = 1.0
 
     v = (condiciones, par)
-    ##print(v[0])##
+    if cb == 'y__':
+        del condiciones[cb]
+        return (condiciones, par)
     return v
 
 # funcion recursiva que en cuentra si hay mas subtours y los arregla hasta
@@ -183,14 +185,14 @@ def otro(orden, subtoura, x, y):
 
                 if len(subtour) != 0:
                     ##print('su', subtour)##
-                    print('Tiene otro')
+                    #print('Tiene otro')
                     ce = otro(orden, subtour, x, y)
                     for k in ce:
                         cond.append(k)
 
-                else:
+                #else:
                     # print(orden)
-                    print('No tiene mas de un subtour')
+                    #print('No tiene mas de un subtour')
                 break
 
             elif ruta[0] == efe:
