@@ -10,7 +10,7 @@ q = 80
 
 
 
-def ruteo(grupo, estaciones, prints=False):
+def ruteo(grupo, estaciones, prints=True):
 
     lista_aux = []
     for estacion in grupo:
@@ -104,30 +104,18 @@ def ruteo(grupo, estaciones, prints=False):
     # resolver
     m.Params.OutputFlag = 0
     m.optimize()
-
-    # a = identifica(m)
-    # if prints:
-    #     if a != False:
-    #         # con subtour
-    #         if len(a) > 0:
-    #             graficar_ruteo(grupo, estaciones, m, c, 0)
-    #             # sin subtour
-    #             graficar_ruteo(grupo, estaciones, m, c, a)
-    #     else:
-    #
-    #         graficar_ruteo(grupo, estaciones, m, c, 0)
-    #         pass
-
     a = identifica(m)
+
     if prints:
         if a != False:
             # con subtour
-            if len(a) > 4:
+            if len(a) > 0:
                 graficar_ruteo(grupo, estaciones, m, c, 0)
                 # sin subtour
                 graficar_ruteo(grupo, estaciones, m, c, a)
         else:
-            graficar_ruteo(grupo, estaciones, m, c, 0)
+            #graficar_ruteo(grupo, estaciones, m, c, 0)
+            pass
 
 
     for numero in grupo:

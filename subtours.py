@@ -52,7 +52,9 @@ def identifica(m):
     orden.append(i)
     par = []
     con = []
-    while len(sirven) != 0:
+    do = 0
+    while len(sirven) != 0 or do == 40:
+        do += 1
         for ruta in sirven:
             # si hay alguna  que llega al 0 y quedan hay subtour...
             if ruta[0] == i and ruta[1] == '0':
@@ -117,10 +119,6 @@ def arregla(orden, subtour, x, y):
         if ruta[0] in subtour:
             sirve.append(ruta)
 
-
-
-
-
     for ruta in sirve:
         if ruta[1] == 0.0 or ruta[1] == -0.0:
             b = ruta[0][1]
@@ -175,7 +173,9 @@ def otro(orden, subtoura, x, y):
     else:
         ini = '0'
     efe = subtour[0][0]
-    while len(subtour) != 0:
+    ti = 0
+    while len(subtour) != 0 or ti == 50:
+        ti += 1
         for ruta in subtour:
             if ruta[0] == efe and ruta[1] == ini:
                 ordenfin.append(ruta)
