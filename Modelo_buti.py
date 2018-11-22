@@ -10,7 +10,7 @@ q = 80
 
 
 
-def ruteo(grupo, estaciones, prints=True):
+def ruteo(grupo, estaciones, prints=0):
 
     lista_aux = []
     for estacion in grupo:
